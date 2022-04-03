@@ -1,0 +1,47 @@
+Index: src/components/common/InputField.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n  <div class=\"field\">\n    <div class=\"control has-icons-left has-icons-right\">\n      <input :class=\"className\" :type=\"type\" v-validate=\"'required|min:6|max:40'\"\n             :placeholder=\"placeHolder\" v-model=\"stringValue\">\n      <span v-if=\"icon\" class=\"icon is-small is-left\">\n          <i :class=\"icon\"></i>\n      </span>\n    </div>\n  </div>\n</template>\n\n<script lang=\"ts\">\n\nimport { Emit, Prop, Vue, Component } from 'vue-property-decorator';\n\n@Component\nexport default class InputField extends Vue {\n\n  @Prop() private type!: string;\n  @Prop() private placeHolder!: string;\n  @Prop() private className!: string;\n  @Prop() private icon: string | undefined;\n\n  private stringValue =\"\";\n\n  @Emit('return-value')\n  public returnValue(): string {\n    return this.stringValue;\n  }\n\n}\n</script>\n\n<style scoped>\n\n.input {\n  border-radius: 50px;\n}\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/common/InputField.vue	(revision e050172332d172413d278cb7c876449d6583bed3)
++++ src/components/common/InputField.vue	(date 1611561062043)
+@@ -1,8 +1,8 @@
+ <template>
+   <div class="field">
+     <div class="control has-icons-left has-icons-right">
+-      <input :class="className" :type="type" v-validate="'required|min:6|max:40'"
+-             :placeholder="placeHolder" v-model="stringValue">
++      <input :class="className" :type="type"
++             :placeholder="placeHolder" :value="value" v-on:input="updateValue($event.target.value)" >
+       <span v-if="icon" class="icon is-small is-left">
+           <i :class="icon"></i>
+       </span>
+@@ -12,7 +12,7 @@
+ 
+ <script lang="ts">
+ 
+-import { Emit, Prop, Vue, Component } from 'vue-property-decorator';
++import {Emit, Prop, Vue, Component, Watch} from 'vue-property-decorator';
+ 
+ @Component
+ export default class InputField extends Vue {
+@@ -21,12 +21,12 @@
+   @Prop() private placeHolder!: string;
+   @Prop() private className!: string;
+   @Prop() private icon: string | undefined;
++  @Prop() value = "";
+ 
+-  private stringValue ="";
+-
+-  @Emit('return-value')
+-  public returnValue(): string {
+-    return this.stringValue;
++  @Emit('input')
++  updateValue(value: string) {
++    console.log(value)
++    return value;
+   }
+ 
+ }

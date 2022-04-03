@@ -1,0 +1,1668 @@
+Index: src/components/navigation/NavBar.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n  <div>\n  <nav class=\"navbar\" role=\"navigation\" aria-label=\"main navigation\">\n    <div class=\"navbar-brand\">\n      <a class=\"navbar-item\" href=\"\">\n        <img src=\"../../assets/images/logo_goalkeeper.png\"  alt=\"\">\n      </a>\n    <a role=\"button\" class=\"navbar-burger burger\" aria-label=\"menu\" aria-expanded=\"true\"\n       data-target=\"navbarBasicExample\" v-on:click=\"showNav = !showNav\" v-bind:class=\"{ 'is-active' : showNav }\">\n      <span aria-hidden=\"false\"></span>\n      <span aria-hidden=\"false\"></span>\n      <span aria-hidden=\"false\"></span>\n    </a>\n    </div>\n    <div id=\"navbarBasicExample\" class=\"navbar-menu\" aria-expanded=\"true\" :class=\"{ 'is-active': showNav }\">\n      <div class=\"navbar-end\">\n        <div class=\"navbar-item has-dropdown is-hoverable\">\n          <a class=\"navbar-link\">\n            App\n          </a>\n          <div class=\"navbar-dropdown\">\n            <a class=\"navbar-item\">\n              <router-link to=\"/\" exact>Create & start sessions</router-link>\n            </a>\n            <hr class=\"navbar-divider\">\n            <a class=\"navbar-item\">\n              <router-link to=\"/manage-team\" exact>Manage your team</router-link>\n            </a>\n          </div>\n        </div>\n        <div class=\"navbar-item has-dropdown is-hoverable\">\n          <a class=\"navbar-link\">\n            <i class=\"far fa-chart-bar\"></i>\n            Dashboard\n          </a>\n          <div class=\"navbar-dropdown\">\n            <a class=\"navbar-item\">\n              <router-link to=\"/dashboard/main\" exact>Team statistics</router-link>\n            </a>\n          </div>\n        </div>\n        <div class=\"navbar-item is-right has-dropdown is-hoverable\">\n          <a class=\"navbar-link\">\n            <i class=\"far fa-user-circle\"></i>\n            Profile\n          </a>\n          <div class=\"navbar-dropdown is-right\">\n            <a class=\"navbar-item\">\n              Edit profile\n            </a>\n            <hr class=\"navbar-divider\">\n            <a class=\"navbar-item\" @click=\"logOut\">\n              <i class=\"fas fa-sign-out-alt\"></i>\n              Logout\n            </a>\n          </div>\n        </div>\n      </div>\n    </div>\n  </nav>\n  </div>\n</template>\n\n<script lang=\"ts\">\nimport { Component, Vue } from 'vue-property-decorator';\nimport { namespace } from 'vuex-class';\nimport Footer from \"@/components/navigation/Footer.vue\";\n\nconst Auth = namespace(\"Auth\");\n\n@Component({\n  components: {Footer }\n})\nexport default class NavBar extends Vue {\n\n    @Auth.State('user')\n    private currentUser!: any;\n    @Auth.Action\n    private signOut!: () => void;\n    private showNav = false;\n    \n    logOut() {\n        this.$store.commit('ClubTeamModule/setClubTeam', null);\n        this.$store.commit('SessionModule/setSessionsInSessionOverview', null);\n        this.$store.commit('SessionModule/setCurrentSession', null);\n        this.signOut();\n        this.$router.push('/login');\n    }\n\n}\n\n</script>\n\n<style scoped lang=\"scss\">\n\n@media screen and (max-width: 1023px) {\n    .navbar-menu {\n        margin-left: auto;\n        min-width: 100%;\n    }\n}\n\na {\n  color: #616b7b;\n  cursor: pointer;\n  text-decoration: none;\n}\n\n.fa-sign-out-alt {\n  margin-right: 5px;\n}\n\n.fa-user-circle:before {\n  content: \"\\f2bd\";\n  margin-right: 4px;\n}\n\n.fa-chart-bar:before {\n  content: \"\\f080\";\n  margin-right: 4px;\n}\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/navigation/NavBar.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/navigation/NavBar.vue	(date 1618392440801)
+@@ -3,7 +3,7 @@
+   <nav class="navbar" role="navigation" aria-label="main navigation">
+     <div class="navbar-brand">
+       <a class="navbar-item" href="">
+-        <img src="../../assets/images/logo_goalkeeper.png"  alt="">
++        <img src="../../assets/images/logo_goalkeeper_white.png"  alt="">
+       </a>
+     <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="true"
+        data-target="navbarBasicExample" v-on:click="showNav = !showNav" v-bind:class="{ 'is-active' : showNav }">
+@@ -93,6 +93,10 @@
+ 
+ <style scoped lang="scss">
+ 
++.navbar-brand {
++  background-color: #202020;
++}
++
+ @media screen and (max-width: 1023px) {
+     .navbar-menu {
+         margin-left: auto;
+@@ -100,8 +104,36 @@
+     }
+ }
+ 
++@media screen and (min-width: 1023px) {
++  .navbar-menu {
++    background-color: #202020
++  }
++}
++
++@media screen and (max-width: 1023px) {
++ .navbar-menu.is-active {
++   display: block;
++   background-color: #262626;
++ }
++}
++
++.navbar-burger:hover {
++  background-color: rgba(0, 0, 0, 0.05);
++  color: whitesmoke;
++}
++
++.navbar-link:not(.is-arrowless) {
++  background-color: #262626;
++}
++
++.navbar-dropdown .navbar-item {
++  padding-left: 1.5rem;
++  padding-right: 1.5rem;
++  background-color: #2b2424;
++}
++
+ a {
+-  color: #616b7b;
++  color: #ffffff;
+   cursor: pointer;
+   text-decoration: none;
+ }
+@@ -113,10 +145,12 @@
+ .fa-user-circle:before {
+   content: "\f2bd";
+   margin-right: 4px;
++  color: turquoise;
+ }
+ 
+ .fa-chart-bar:before {
+   content: "\f080";
+   margin-right: 4px;
++  color: turquoise;
+ }
+ </style>
+Index: src/components/sessions/SessionOverview.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div class=\"body\">\n      <HeroBanner label=\"Training sessions\"/>\n      <PlaceHolder\n          v-if=\"showPlaceholder\"\n          icon=\"fas fa-arrow-down\"\n          :text=\"placeholderText\"/>\n            <div class=\"columns is-multiline is-mobile\">\n                <Session\n                    v-for=\"session in sessionOverview\"\n                    :key=\"session.id\"\n                    :session=\"session\">\n                </Session>\n            </div>\n            <div class=\"fixed-button\">\n                <Button :icon-data=\"{icon: 'fas fa-plus', position: 'left'}\"\n                        class-name=\"button is-centered is-primary\"\n                        text=\"New Session\"\n                        @clicked=\"createNewSession\"/>\n        </div>\n    </div>\n</template>\n\n<script lang=\"ts\">\nimport {Component, Vue, Watch} from 'vue-property-decorator';\nimport Session from '@/components/sessions/Session.vue';\nimport SessionDto from '@/data/dto/SessionDto';\nimport SessionBackend from '@/backend/SessionBackend';\nimport { namespace } from 'vuex-class';\nimport Routes from '@/router/Routes';\nimport HeroBanner from \"@/components/common/HeroBanner.vue\";\nimport Button from '@/components/common/Button.vue';\nimport PlaceHolder from \"@/components/common/PlaceHolder.vue\";\n\nconst SessionModule = namespace('SessionModule');\n\n@Component({\n    components: {\n      PlaceHolder,\n        Session,\n        HeroBanner,\n        Button\n    }\n})\nexport default class SessionOverview extends Vue {\n\n    @SessionModule.Getter('sessionOverview')\n    getSessionOverview!: SessionDto[];\n\n    sessionsFetched = false;\n    placeholder = false;\n    placeholderText = 'You haven\\'t added any sessions yet. You can do so by clicking the button below';\n\n    created() {\n        try {\n            this.getSessions();\n        } catch (error) {\n            throw error;\n        }\n    }\n\n    @Watch('sessionsFetched')\n    sessionRetrieved(): void {\n        if (!this.sessionsFetched) {\n            return;\n        }\n        this.$emit('showNewSessionPopUp', true);\n    }\n\n    getSessions() {\n      let loader = this.initLoader();\n        let sessions: SessionDto[] = [];\n        SessionBackend.retrieveSessions().subscribe(\n            (sessionCollection: SessionDto[]) => {\n                sessionCollection.forEach(sessionDto => {\n                    sessions.push(sessionDto);\n                });\n            }, (error: any) => {\n                console.error(error);\n                loader.hide();\n                return;\n            }, () => {\n                this.sessionsFetched = true;\n                this.$store.commit('SessionModule/setSessionsInSessionOverview', sessions);\n                loader.hide();\n            }\n        );\n    }\n\n    get showPlaceholder() {\n        return this.placeholder && this.sessionsFetched;\n    }\n\n    get sessionOverview() {\n        const overview = this.getSessionOverview;\n\n        if (!overview || overview.length === 0) {\n            this.placeholder = true;\n            return;\n        }\n        this.placeholder = false;\n        return overview.sort((first: SessionDto, second: SessionDto) => (first.start!.getTime() - second.start!.getTime()));\n    }\n\n    createNewSession() {\n        this.$router.push({\n            name: Routes.SessionWizard\n        });\n    }\n\n    initLoader() {\n      return this.$loading.show({\n        opacity: 0.2,\n        color: '#50ffe5',\n        backgroundColor: '#ffffff',\n        width: 40,\n        canCancel: true\n      });\n    }\n}\n\n</script>\n\n<style scoped lang=\"scss\">\n\n.body {\n    display: flex;\n    flex-direction: column;\n    flex-basis: 100%;\n}\n\n.columns {\n  margin-top: 30px;\n}\n\n.fixed-button {\n    position: fixed;\n    align-self: center;\n    bottom: 6vh;\n    z-index: 1;\n}\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/sessions/SessionOverview.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/sessions/SessionOverview.vue	(date 1618390969396)
+@@ -127,6 +127,7 @@
+     display: flex;
+     flex-direction: column;
+     flex-basis: 100%;
++    background-color: #121212;
+ }
+ 
+ .columns {
+Index: src/components/sessions/Session.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div class=\"column is-full\">\n        <div class=\"card is is-centered\" @click=\"changeShowPopUp\">\n            <div class=\"card-content\">\n                <div class=\"media\">\n                    <div class=\"media-left\">\n                      <span class=\"icon\"><i class=\"far fa-calendar\"></i></span><span class=\"date\">{{ this.sessionDate}}</span>\n                      <p id=\"session-name\"> {{ this.sessionName }} </p>\n                    </div>\n                    <div class=\"media-content \">\n                      <div>\n\n                      </div>\n                    </div>\n                    <div class=\"media-right\">\n                      <div>\n                        <span v-if=\"session.first.players.length <= 2\" class=\"tag is-primary is-pulled-left\">{{ playerCount }}</span>\n                        <span v-if=\"session.first.players.length >= 3\" class=\"tag is-warning is-pulled-left\">{{ playerCount }}</span>\n                        <span v-if=\"session.first.players.length >= 5\" class=\"tag is-danger is-pulled-left\">{{ playerCount }}</span>\n                      </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <PopUp\n            v-if=\"showPopUp\"\n            :pop-up-text=\"textPopUp\"\n            @decline=\"changeShowPopUp\"\n            @confirm=\"routeToSessionGame\">\n        </PopUp>\n    </div>\n</template>\n\n<script lang=\"ts\">\nimport { Component, Vue, Prop } from 'vue-property-decorator';\nimport SessionDto from '@/data/dto/SessionDto';\nimport DateUtils from '@/components/sessions/DateUtils';\nimport PopUp from '@/components/common/PopUp.vue';\nimport Routes from '@/router/Routes';\n\n@Component({\n    components: {\n        PopUp\n    }\n})\nexport default class Session extends Vue {\n    @Prop() session!: SessionDto;\n    showPopUp = false;\n    readonly textPopUp = 'Start Session?';\n\n    get sessionName(): string | undefined {\n        return 'Training session ' +  this.session.name;\n    }\n\n    get playerCount(): string | undefined {\n      return this.session.first?.players?.length + 'x' + this.session.second?.players?.length;\n    }\n\n    get sessionDate(): string | undefined {\n        return DateUtils.formatDateToString(this.session.start!);\n    }\n\n    changeShowPopUp() {\n        this.showPopUp = !this.showPopUp;\n    }\n\n    private routeToSessionGame() {\n        this.$store.commit('SessionModule/setCurrentSession', this.session);\n        this.$router.push({\n            name: Routes.SessionGame,\n            params: {\n                sessionId: this.session.id!\n            }\n        });\n    }\n}\n\n</script>\n\n<style scoped lang=\"scss\">\n\n.card {\n  margin: auto;\n  max-width: 500px;\n  max-height: 89px;\n\n    .card-content {\n        padding: 0.9rem;\n        font-size: 0.9em;\n\n        .media {\n            display: flex;\n            align-items: center;\n\n            .media-left > * {\n                margin: 5px;\n            }\n        }\n    }\n\n    .has-text-link {\n        color: #33afa2 !important;\n    }\n\n}\n\n@media (max-width: 769px) {\n  .card {\n    margin-right: 20px;\n    margin-left: 20px;\n  }\n}\n\n.column {\n  padding: 0.45rem;\n}\n\n.fa-edit:before {\n    content: \"\\f044\";\n    color: #40e0d0;\n}\n\n.fa-trash-alt:before {\n    content: \"\\f2ed\";\n    color: indianred;\n    padding-left: 3px;\n}\n\n.icon {\n  color: black;\n}\n\n.date {\n  color: black;\n}\n\n#session-name  {\n  color: #bdbbbb;\n  font-weight: 400;\n}\n\n#session-type {\n  font-style: italic;\n  color: #dcdcdc;\n  font-weight: 400;\n  position: absolute;\n  top: 51px;\n  right: 20px;\n}\n\n.tag {\n  position: absolute;\n  top: 18px;\n  right: 21px;\n  font-size: 0.9rem;\n}\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/sessions/Session.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/sessions/Session.vue	(date 1618391065247)
+@@ -83,6 +83,7 @@
+   margin: auto;
+   max-width: 500px;
+   max-height: 89px;
++  background-color: #2d2d2d;
+ 
+     .card-content {
+         padding: 0.9rem;
+@@ -127,15 +128,15 @@
+ }
+ 
+ .icon {
+-  color: black;
++  color: whitesmoke;
+ }
+ 
+ .date {
+-  color: black;
++  color: whitesmoke;
+ }
+ 
+ #session-name  {
+-  color: #bdbbbb;
++  color: whitesmoke;
+   font-weight: 400;
+ }
+ 
+Index: src/components/manageteam/components/PlayerLabel.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n  <div class=\"label has-text-centered\">\n    <h6 class=\"subtitle is-6\">Players</h6>\n  </div>\n</template>\n\n<script>\nexport default {\n  name: \"PlayerLabel\"\n}\n</script>\n\n<style scoped>\n\n.subtitle.is-6 {\n  font-size: 0.9rem;\n}\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/manageteam/components/PlayerLabel.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/manageteam/components/PlayerLabel.vue	(date 1618393246356)
+@@ -14,5 +14,6 @@
+ 
+ .subtitle.is-6 {
+   font-size: 0.9rem;
++  color: whitesmoke;
+ }
+ </style>
+Index: src/components/wizard/utils/DatePicker.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div class=\"field has-text-left\">\n        <label for=\"date-input\"\n            class=\"has-text-weight-bold\">\n                {{this.label}}\n        </label>\n    <input  id=\"date-input\"\n            type=\"date\"\n            ref=\"date\"/>\n    </div>\n</template>\n\n<script lang=\"ts\">\nimport {Component, Prop, Vue} from 'vue-property-decorator';\nimport bulmaCalendar from 'bulma-calendar/dist/js/bulma-calendar.min.js';\n\n@Component\nexport default class DatePicker extends Vue {\n    @Prop() date!: Date | undefined;\n    @Prop({ default : 'Date'}) private label: string | undefined;\n    selectedDate: Date | undefined;\n    calendar: any;\n\n    mounted() {\n        this.calendar = this.initCalendar();\n        this.calendar.on('select', (event: any) => {\n            (this.selectedDate = event.data.startDate);\n            this.$emit('dateChanged', this.selectedDate!);\n        });\n        this.calendar.on('clear', () => {\n           this.$emit('dateChanged', '');\n        });\n    }\n\n    private initCalendar() {\n        const initialDate = this.date ? this.date : undefined;\n        return bulmaCalendar.attach(this.createRef(), {\n            startDate: initialDate,\n            dateFormat: 'DD-MM-YYYY',\n            displayMode: 'dialog'\n        })[0];\n    }\n\n    private createRef() {\n        return this.$refs.date;\n    }\n\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/wizard/utils/DatePicker.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/wizard/utils/DatePicker.vue	(date 1618400460305)
+@@ -50,4 +50,11 @@
+ 
+ <style scoped lang="scss">
+ 
++.has-text-weight-bold {
++  color: whitesmoke;
++}
++
++#date-input {
++  color: whitesmoke;
++}
+ </style>
+Index: src/components/wizard/utils/SelectPlayer.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <button\n        class=\"button\"\n        @click=\"changeSelection\"\n         :class=\"[notSelected ? 'not-selected' : firstTeam ? 'first-team' : 'second-team']\"\n         :disabled=\"firstTeamPlayerDisabled || secondTeamPlayerDisabled\">\n            {{ player.player.givenName }}\n    </button>\n</template>\n\n<script lang=\"ts\">\nimport {Component, Prop, Vue} from 'vue-property-decorator';\nimport type {SessionWizardPlayer} from '@/data/interface/SessionWizardPlayer';\nimport {SessionTeam} from '@/data/enum/SessionTeam';\nimport {namespace} from 'vuex-class';\n\nconst SessionWizardModuleInstance = namespace('SessionWizardModule');\n\n@Component\nexport default class SelectPlayer extends Vue {\n    @Prop() player!: SessionWizardPlayer;\n\n    @SessionWizardModuleInstance.Getter('currentStep')\n    step!: number;\n\n    get notSelected() {\n        return this.player.team === SessionTeam.NOT_SELECTED;\n    }\n\n    get firstTeamPlayerDisabled() {\n        return this.step === 3 && this.player.team === SessionTeam.FIRST;\n    }\n\n    get secondTeamPlayerDisabled() {\n        return this.step === 2 && this.player.team === SessionTeam.SECOND;\n    }\n\n    get firstTeam() {\n        return this.player.team === SessionTeam.FIRST;\n    }\n\n    changeSelection() {\n        this.$emit('change-select-player', this.player);\n    }\n\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n.button {\n    margin: 5px;\n    width: 90px;\n}\n\n.not-selected {\n    background: transparent;\n}\n\n.first-team {\n    background: turquoise !important;\n}\n\n.second-team {\n    background: lightcoral !important;\n}\n\n</style>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/wizard/utils/SelectPlayer.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/wizard/utils/SelectPlayer.vue	(date 1618399816378)
+@@ -51,6 +51,7 @@
+ .button {
+     margin: 5px;
+     width: 90px;
++    color: whitesmoke;
+ }
+ 
+ .not-selected {
+@@ -65,4 +66,6 @@
+     background: lightcoral !important;
+ }
+ 
+-</style>
+\ No newline at end of file
++
++
++</style>
+Index: src/components/manageteam/components/PlayerComponent.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n  <div class=\"column is-full\">\n    <div class=\"card\" @click=\"editPlayer\">\n        <div class=\"card-content\">\n            <div class=\"media\">\n              <div class=\"media-left\">\n                <span class=\"icon\"><i :class=\"getClass\"></i></span><span class=\"date\">{{ fullName}}</span>\n                <p id=\"player-data\"> {{ playerInfo }} </p>\n              </div>\n                <div class=\"media-content\">\n                </div>\n                <div class=\"media-right\">\n                  <ShirtIcon :shirt-number=\"this.player.shirtNumber\"></ShirtIcon>\n                </div>\n            </div>\n        </div>\n    </div>\n  </div>\n</template>\n\n<script lang=\"ts\">\nimport {Component, Emit, Prop, Vue} from 'vue-property-decorator';\nimport PlayerDto from '@/data/dto/PlayerDto';\nimport Routes from '@/router/Routes';\nimport ShirtIcon from '@/components/common//ShirtIcon.vue';\n\n@Component({\n    components: {\n        ShirtIcon\n    }\n})\nexport default class PlayerComponent extends Vue {\n\n  @Prop()\n  private player! : PlayerDto;\n\n  private labels = new Map([\n    [\"DEFENDER\", \"Striker\"], [\"MIDFIELDER\", \"Midfielder\"], [\"GOALKEEPER\", \"Goalkeeper\"], [\"STRIKER\", \"Striker\"],\n    [\"LEFT\", \"left footed\"], [\"RIGHT\", \"right footed\"], [\"BOTH\", \"left & right footed\"]\n  ]);\n\n  private iconClasses = new Map([\n    [\"DEFENDER\", \"fas fa-shield-alt\"], [\"MIDFIELDER\", \"fas fa-running\"], [\"GOALKEEPER\", \"fas fa-bullseye\"], [\"STRIKER\", \"fas fa-bolt\"],\n  ]);\n\n  @Emit('return-player')\n    public returnPlayer(): PlayerDto {\n        return this.player;\n    }\n\n    get fullName(): string {\n      return this.player.givenName + ' ' + this.player.surname\n    }\n\n    get playerInfo(): string | undefined {\n      if (this.player.preferredFoot && this.player.position) {\n        return this.labels.get(this.player.position) + ', ' + this.labels.get(this.player.preferredFoot);\n      } else if (this.player.position) {\n        return this.labels.get(this.player.position);\n      }\n    }\n\n    get getClass(): string | undefined {\n    if (this.player.position)\n      return this.iconClasses.get(this.player.position);\n    }\n\n    private editPlayer() {\n        if (this.player) {\n            this.$router.push({\n                name: Routes.Player,\n                params: {\n                playerId: this.player.id!\n            }});\n        }\n    }\n}\n\n</script>\n\n<style scoped lang=\"scss\">\n.card {\n  margin: auto;\n  max-width: 500px;\n  max-height: 89px;\n\n  .card-content {\n    padding: 0.9rem;\n    font-size: 0.9em;\n\n    .media {\n      display: flex;\n      align-items: center;\n\n      .media-left > * {\n        margin: 5px;\n      }\n    }\n  }\n\n  .has-text-link {\n    color: #33afa2 !important;\n  }\n\n}\n\n@media (max-width: 769px) {\n  .card {\n    margin-right: 20px;\n    margin-left: 20px;\n  }\n}\n\n.column {\n  padding: 0.45rem;\n}\n\n\n#player-data  {\n  color: #bdbbbb;\n  font-weight: 400;\n}\n\n.fa-bullseye:before {\n  content: \"\\f140\";\n  color: #f14668;\n}\n\n.fa-running:before {\n  content: \"\\f70c\";\n  color: cornflowerblue;\n}\n\n.fa-shield-alt:before {\n  content: \"\\f3ed\";\n  color: turquoise;\n}\n\n.fa-bolt:before {\n  content: \"\\f0e7\";\n  color: #ffdd57\n}\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/manageteam/components/PlayerComponent.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/manageteam/components/PlayerComponent.vue	(date 1618393115379)
+@@ -4,7 +4,7 @@
+         <div class="card-content">
+             <div class="media">
+               <div class="media-left">
+-                <span class="icon"><i :class="getClass"></i></span><span class="date">{{ fullName}}</span>
++                <span class="icon"><i :class="getClass"></i></span><span class="name">{{ fullName}}</span>
+                 <p id="player-data"> {{ playerInfo }} </p>
+               </div>
+                 <div class="media-content">
+@@ -83,6 +83,7 @@
+   margin: auto;
+   max-width: 500px;
+   max-height: 89px;
++  background-color: #292929;
+ 
+   .card-content {
+     padding: 0.9rem;
+@@ -111,6 +112,9 @@
+   }
+ }
+ 
++.name {
++  color: whitesmoke;
++}
+ .column {
+   padding: 0.45rem;
+ }
+Index: src/components/wizard/PlayerWizard.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div class=\"body\">\n        <nav-bar/>\n        <div class=\"box\">\n            <span class=\"tag is-info is-pulled-left\">{{ label }}</span>\n            <button class=\"delete is-pulled-right\"\n                    @click=\"navigateBack\"></button>\n            <div class=\"container\">\n                <div class=\"field\">\n                    <label  class=\"label\"\n                            for=\"given-name\">\n                        Given name\n                    </label>\n                <div class=\"control has-icons-left has-icons-right\">\n                    <input  id=\"given-name\"\n                            class=\"input is-primary\"\n                            v-model=\"player.givenName\"\n                            type=\"text\"\n                            placeholder=\"enter a given name\">\n                    <span class=\"icon is-small is-left\">\n                        <i class=\"fas fa-user\"></i>\n                    </span>\n                </div>\n                <p v-if=\"!givenNameValid\"\n                   class=\"help is-danger\">\n                    Please enter a valid given name\n                </p>\n            </div>\n            <div class=\"field\">\n                <label  class=\"label\"\n                        for=\"surname\">\n                    Surname\n                </label>\n                <div class=\"control has-icons-left has-icons-right\">\n                    <input  id=\"surname\"\n                            class=\"input is-primary\"\n                            v-model=\"player.surname\"\n                            type=\"text\"\n                            placeholder=\"enter a surname\">\n                    <span class=\"icon is-small is-left\">\n                        <i class=\"fas fa-user\"></i>\n                    </span>\n                </div>\n                <p v-if=\"!lastnameValid\"\n                   class=\"help is-danger\">\n                    Please enter a valid surname\n                </p>\n            </div>\n            <div class=\"field\">\n                <label  class=\"label\"\n                        for=\"shirt-number\">\n                    Shirt number\n                </label>\n                <div class=\"control has-icons-left has-icons-right\">\n                    <input  id=\"shirt-number\"\n                            class=\"input is-primary\"\n                            v-model=\"player.shirtNumber\"\n                            type=\"number\"\n                            placeholder=\"enter a shirt number\">\n                    <span class=\"icon is-small is-left\">\n                        <i class=\"fas fa-tshirt\"></i>\n                    </span>\n                </div>\n                <p v-if=\"!shirtNumberIsValid\"\n                   class=\"help is-danger\">\n                    Please enter a shirt number between 1 and 99\n                </p>\n            </div>\n            <div class=\"field\">\n                <label  class=\"label\"\n                        for=\"position\">\n                    Position\n                </label>\n                <div class=\"control\">\n                    <div class=\"select is-primary\">\n                        <select id=\"position\"\n                                v-model=\"player.position\">\n                            <option>GOALKEEPER</option>\n                            <option>DEFENDER</option>\n                            <option>MIDFIELDER</option>\n                            <option>STRIKER</option>\n                        </select>\n                    </div>\n                </div>\n                <p v-if=\"!positionValid\"\n                   class=\"help is-danger\">\n                    Please select a position\n                </p>\n            </div>\n            <div class=\"field\">\n                <label  class=\"label\"\n                        for=\"preferred-foot\">\n                    Preferred foot\n                </label>\n                <div class=\"control\">\n                    <div class=\"select is-primary\">\n                        <select id=\"preferred-foot\"\n                                v-model=\"player.preferredFoot\">\n                            <option>RIGHT</option>\n                            <option>LEFT</option>\n                            <option>BOTH</option>\n                        </select>\n                    </div>\n                </div>\n                <p v-if=\"!preferredFootValid\"\n                   class=\"help is-danger\">\n                    Please select the preferred foot\n                </p>\n            </div>\n            <date-picker\n                label=\"Date of birth\"\n                :date=\"date\"\n                @dateChanged=\"setDate\">\n            </date-picker>\n                <div class=\"field is-grouped\">\n                    <Button :icon-data=\"{icon: 'fas fa-trash-alt', position: 'left'}\"\n                            class-name=\"button is-centered is-danger is-outlined\"\n                            @clicked=\"removePlayer\"/>\n                    <Button :icon-data=\"{icon: 'far fa-save', position: 'left'}\"\n                            class-name=\"button is-centered is-primary is-outlined\"\n                            text=\"Save\"\n                            @clicked=\"submitForm(true)\"/>\n                    <Button :icon-data=\"{icon: 'fas fa-angle-double-right', position: 'right'}\"\n                            class-name=\"button is-centered is-info is-outlined\"\n                            text=\"Add more\"\n                            @clicked=\"submitAndReset\"/>\n                </div>\n            </div>\n        </div>\n    </div>\n</template>\n\n<script lang=\"ts\">\nimport {Component, Vue} from 'vue-property-decorator';\nimport NavBar from \"@/components/navigation/NavBar.vue\";\nimport Footer from \"@/components/navigation/Footer.vue\";\nimport PlayerDto from \"@/data/dto/PlayerDto\";\nimport ClubTeamDto from \"@/data/dto/ClubTeamDto\";\nimport Button from \"@/components/common/Button.vue\";\nimport {namespace} from \"vuex-class\";\nimport PlayerBackend from \"@/backend/PlayerBackend\";\nimport DatePicker from \"@/components/wizard/utils/DatePicker.vue\";\n\nconst ClubTeamModule = namespace(\"ClubTeamModule\");\nconst ADD_PLAYER = 'Add player';\nconst EDIT_PLAYER = 'Edit player';\n\n@Component({\n  components: {\n    NavBar,\n    Footer,\n    DatePicker,\n    Button\n  }\n})\nexport default class PlayerWizard extends Vue {\n\n  @ClubTeamModule.State('clubTeam')\n  private clubTeam!: ClubTeamDto;\n\n  private label = ADD_PLAYER;\n  private givenNameValid = true;\n  private lastnameValid = true;\n  private preferredFootValid = true;\n  private shirtNumberIsValid = true;\n  private positionValid = true;\n\n  player: PlayerDto = {\n    id: undefined,\n    givenName: undefined,\n    surname: undefined,\n    shirtNumber: undefined,\n    position: undefined,\n    preferredFoot: undefined,\n    dateOfBirth: undefined\n  }\n\n  created() {\n    const playerId = this.$route.params.playerId;\n    if (playerId && this.clubTeam.players) {\n      this.label = EDIT_PLAYER;\n      this.player = this.findPlayerByIdAndTeam(playerId, this.clubTeam.players)!;\n    }\n  }\n\n  get date() {\n    return this.player.dateOfBirth;\n  }\n\n  private setDate(date: Date) {\n    this.player.dateOfBirth = date;\n  }\n\n  private validateForm(): boolean {\n    this.givenNameValid = this.player!.givenName?.length !> 0;\n    this.lastnameValid = this.player!.surname?.length !> 0;\n    this.shirtNumberIsValid = !this.player!.shirtNumber ? false : this.player.shirtNumber >= 1 && this.player.shirtNumber <= 99;\n    this.positionValid = this.player!.position?.length !> 0;\n    this.preferredFootValid = this.player!.preferredFoot?.length !> 0;\n    return this.givenNameValid && this.lastnameValid && this.shirtNumberIsValid && this.positionValid && this.preferredFootValid;\n  }\n\n  private findPlayerByIdAndTeam(playerId: string, team: PlayerDto[]): PlayerDto | undefined {\n    return team.find(player => player.id === playerId);\n  }\n\n  private removePlayer() {\n    if (this.player) {\n      PlayerBackend.deletePlayer(this.player)\n          .subscribe(() => {\n            this.navigateBack();\n          })\n    }\n  }\n\n  submitAndReset(){\n    this.submitForm(false);\n    this.$router.go(0);\n    this.notify();\n  }\n\n  submitForm(navigateBack: Boolean) {\n    const isValid = this.validateForm();\n    if (isValid && this.player) {\n      PlayerBackend.upsertPlayer(this.player)\n          .subscribe(() => {\n            if (navigateBack) {\n              this.navigateBack();\n              this.notify();\n            }\n          })\n      }\n  }\n\n  navigateBack() {\n    this.$router.push('/manage-team');\n  }\n\n  notify() {\n    this.$notify({\n      group: 'alert',\n      title: 'Player updated'\n    });\n  }\n}\n\n</script>\n<style scoped lang=\"scss\">\n\n.box {\n  margin: 20px;\n}\n\n.container {\n  margin-top: 50px;\n}\n\n.field.is-grouped {\n  display: flex;\n  justify-content: flex-start;\n  margin-top: 40px;\n}\n\n.steps:not(.is-hollow) .steps-segment.is-active .steps-marker:not(.is-hollow) {\n  background-color: #06d1b2;\n  color: #fff;\n}\n\n.fa-save:before {\n  content: \"\\f0c7\";\n  margin-right: 8px;\n}\n\n.fa-angle-double-right:before {\n  content: \"\\f101\";\n  margin-left: 8px;\n}\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/wizard/PlayerWizard.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/wizard/PlayerWizard.vue	(date 1618399025687)
+@@ -117,7 +117,7 @@
+                             class-name="button is-centered is-danger is-outlined"
+                             @clicked="removePlayer"/>
+                     <Button :icon-data="{icon: 'far fa-save', position: 'left'}"
+-                            class-name="button is-centered is-primary is-outlined"
++                            class-name="button is-centered is-primary is-outlined no-background"
+                             text="Save"
+                             @clicked="submitForm(true)"/>
+                     <Button :icon-data="{icon: 'fas fa-angle-double-right', position: 'right'}"
+@@ -249,12 +249,18 @@
+ 
+ .box {
+   margin: 20px;
++  background-color: #1e1e1e;
+ }
+ 
+ .container {
+   margin-top: 50px;
+ }
+ 
++.label:not(:last-child) {
++  margin-bottom: 0.5em;
++  color: whitesmoke;
++}
++
+ .field.is-grouped {
+   display: flex;
+   justify-content: flex-start;
+@@ -275,4 +281,16 @@
+   content: "\f101";
+   margin-left: 8px;
+ }
++
++.select.is-primary select {
++  border-color: turquoise;
++  background-color: #1f1f1f;
++  color: whitesmoke;
++}
++
++.control.has-icons-right .input, .control.has-icons-right .select select {
++  padding-right: 2.5em;
++  background-color: #202020;
++  color: whitesmoke;
++}
+ </style>
+Index: src/components/common/PopUp.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div class=\"modal\"\n         :class=\"{'is-active' : true}\">\n        <div class=\"modal-background\" @click=\"decline\"></div>\n        <div class=\"modal-card\">\n            <header class=\"modal-card-body\">\n                <p class=\"subtitle\"> {{ PopUpText }} </p>\n            </header>\n            <div class=\"button-details\">\n                <Button :icon-data=\"{ icon: 'fas fa-times-circle', position: 'left' }\"\n                        class-name=\"button is-centered is-danger is-outlined\"\n                        :text=\"declineButtonText\"\n                        @clicked=\"decline\"></Button>\n                <Button :icon-data=\"{ icon: 'fas fa-check-circle', position: 'right' }\"\n                        class-name=\"button is-centered is-primary is-outlined\"\n                        :text=\"approveButtonText\"\n                        @clicked=\"confirm\"></Button>\n            </div>\n        </div>\n        <button class=\"modal-close is-large\"\n                aria-label=\"close\"\n                @click=\"decline\">\n        </button>\n    </div>\n</template>\n\n<script lang=\"ts\">\nimport {Component, Emit, Prop, Vue} from 'vue-property-decorator';\nimport Button from '@/components/common/Button.vue';\n\n@Component({\n    components: {Button}\n})\nexport default class PopUp extends Vue {\n    @Prop({ type: String, default: '' }) PopUpText!: string;\n    @Prop({ type: String, default: 'No'}) textDeclineButton!: string;\n    @Prop({ type: String, default: 'Yes'}) textApproveButton!: string;\n\n    get declineButtonText() {\n        return this.textDeclineButton;\n    }\n\n    get approveButtonText() {\n        return this.textApproveButton;\n    }\n\n    @Emit('confirm')\n    confirm() {\n        return true;\n    }\n\n    @Emit('decline')\n    decline() {\n        return true;\n    }\n\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n.modal-card {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    width: 80%;\n    border-radius: 10px;\n    background: white;\n\n    .button-details {\n        display: flex;\n        justify-content: space-around;\n        width: 100%;\n        margin-bottom: 20px;\n\n    }\n}\n\n.modal-card .modal-card-body {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    width: 100%;\n    background-color: white;\n    margin-bottom: 20px;\n}\n\n.subtitle {\n  color: rgb(107 107 107 / 90%);\n  font-size: 0.9rem;\n  font-weight: 500;\n  line-height: 1.25;\n}\n\n.button-details {\n  margin-bottom: 20px;\n}\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/common/PopUp.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/common/PopUp.vue	(date 1618399215213)
+@@ -12,7 +12,7 @@
+                         :text="declineButtonText"
+                         @clicked="decline"></Button>
+                 <Button :icon-data="{ icon: 'fas fa-check-circle', position: 'right' }"
+-                        class-name="button is-centered is-primary is-outlined"
++                        class-name="button is-centered is-primary is-outlined no-background"
+                         :text="approveButtonText"
+                         @clicked="confirm"></Button>
+             </div>
+@@ -65,7 +65,7 @@
+     align-items: center;
+     width: 80%;
+     border-radius: 10px;
+-    background: white;
++    background: #2d2d2d;
+ 
+     .button-details {
+         display: flex;
+@@ -81,12 +81,12 @@
+     flex-direction: column;
+     align-items: center;
+     width: 100%;
+-    background-color: white;
++    background-color: #2d2d2d;
+     margin-bottom: 20px;
+ }
+ 
+ .subtitle {
+-  color: rgb(107 107 107 / 90%);
++  color: whitesmoke;
+   font-size: 0.9rem;
+   font-weight: 500;
+   line-height: 1.25;
+Index: src/components/manageteam/ManageTeam.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n  <div class=\"body\" v-if=\"this.clubTeam\">\n    <nav-bar />\n    <div id=\"wrapper\">\n      <HeroBanner label=\"Manage team\"/>\n      <TeamComponent :club-team=\"this.clubTeam\"/>\n      <PlayerLabel/>\n      <div class=\"columns is-multiline is-mobile\">\n        <PlayerComponent\n            v-for=\"player in clubTeam.players\"\n            :key=\"player.id\"\n            :player=\"player\"/>\n      </div>\n      <PlaceHolder\n          v-if=\"this.clubTeam.players.length === 0 && this.clubTeam.id\"\n          icon=\"fas fa-arrow-down\"\n          :text=\"placeholderText\"/>\n      <div class=\"fixed-button\">\n        <Button\n            :icon-data=\"{icon: 'fas fa-plus', position: 'left'}\"\n            class-name=\"button is-centered is-primary\"\n            text=\"Add player\"\n            @clicked=\"addPlayer\" />\n      </div>\n    </div>\n    <Footer/>\n  </div>\n</template>\n<script lang=\"ts\">\nimport {Component, Vue} from 'vue-property-decorator';\nimport NavBar from \"@/components/navigation/NavBar.vue\";\n\nimport ClubTeamDto from \"@/data/dto/ClubTeamDto\";\nimport ClubTeamBackend from \"@/backend/ClubTeamBackend\";\nimport Button from \"@/components/common/Button.vue\";\nimport PlayerComponent from \"@/components/manageteam/components/PlayerComponent.vue\";\nimport TeamComponent from \"@/components/manageteam/components/TeamComponent.vue\";\nimport PlayerPopup from \"@/components/popup/PlayerPopup.vue\";\nimport Footer from \"@/components/navigation/Footer.vue\";\nimport HeroBanner from \"@/components/common/HeroBanner.vue\";\nimport PlayerLabel from \"@/components/manageteam/components/PlayerLabel.vue\";\nimport PlaceHolder from \"@/components/common/PlaceHolder.vue\";\nconst pText = 'You haven\\'t added any players yet. You can do so by clicking the button below';\n\n@Component({\n  components: {\n    PlaceHolder,\n    PlayerLabel,\n    PlayerPopup,\n    TeamComponent,\n    NavBar,\n    PlayerComponent,\n    HeroBanner,\n    Footer,\n    Button\n  }\n})\nexport default class ManageTeam extends Vue {\n\n  private clubTeam: ClubTeamDto = new ClubTeamDto();\n  private placeholderText = pText;\n\n  created() {\n    this.getTeam();\n  }\n\n  private addPlayer() {\n    this.$router.push('/manage-team/player');\n  }\n\n  private getTeam() {\n    let loader = this.initLoader();\n    ClubTeamBackend.retrieveTeam().subscribe(clubTeamDto => {\n      this.clubTeam = clubTeamDto;\n      this.$store.commit('ClubTeamModule/setClubTeam', this.clubTeam);\n    }, (error: any) => {\n      console.log(error);\n      loader.hide();\n    }, () => {\n      loader.hide();\n    });\n  }\n\n  initLoader() {\n    return this.$loading.show({\n      opacity: 0.2,\n      color: '#50ffe5',\n      backgroundColor: '#ffffff',\n      width: 40,\n      canCancel: true\n    });\n  }\n}\n\n</script>\n\n<style scoped lang=\"scss\">\n\n\n.body {\n  display: flex;\n  flex-direction: column;\n  height: 100vh;\n}\n\n.hero-body {\n    padding: 30px;\n}\n\n.box {\n  margin: 20px;\n  box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 2%);\n}\n\n.label {\n  margin-bottom: 15px;\n}\n\n.fixed-button {\n  position: fixed;\n  align-self: center;\n  bottom: 6vh;\n  z-index: 1;\n}\n\n#wrapper {\n  display: flex;\n  flex-direction: column;\n  flex-basis: 100%;\n}\n\n\n\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/manageteam/ManageTeam.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/manageteam/ManageTeam.vue	(date 1618392682118)
+@@ -100,7 +100,8 @@
+ .body {
+   display: flex;
+   flex-direction: column;
+-  height: 100vh;
++  height: 100%;
++  background-color: #121212;
+ }
+ 
+ .hero-body {
+Index: src/components/dashboard/main/components/SummaryPanel.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n  <div class=\"column\">\n  <div class=\"box\">\n      <nav class=\"level\">\n        <div class=\"level-item has-text-centered\">\n          <div>\n            <p class=\"heading\">Team name</p>\n            <span class=\"icon-text has-text-black\">\n            <span class=\"icon\">\n              <i class=\"fas fa-star\"></i>\n            </span>\n              <span class=\"clubname\">{{ teamName }}</span>\n            </span>\n          </div>\n        </div>\n        <div class=\"level-item has-text-centered\">\n          <div>\n            <p class=\"heading\">Total sessions</p>\n            <h6 class=\"subtitle is-6\">{{ totalSessions }}</h6>\n          </div>\n        </div>\n        <div class=\"level-item has-text-centered\">\n          <div>\n            <p class=\"heading\">Sessions planned</p>\n            <h6 class=\"subtitle is-6\">{{sessionsPlanned}}</h6>\n          </div>\n        </div>\n        <div class=\"level-item has-text-centered\">\n          <div>\n            <p class=\"heading\">Sessions finished</p>\n            <h6 class=\"subtitle is-6\">{{sessionFinished}}</h6>\n          </div>\n        </div>\n        <div class=\"level-item has-text-centered\">\n          <div>\n            <p class=\"heading\">Avg sessions per week</p>\n            <h6 class=\"subtitle is-6\">{{avgSessions}}</h6>\n          </div>\n        </div>\n      </nav>\n    </div>\n  </div>\n</template>\n\n<script lang=\"ts\">\nimport Component from \"vue-class-component\";\nimport {Prop, Vue} from \"vue-property-decorator\";\nimport {namespace} from \"vuex-class\";\nimport PlayerDataDto from \"@/data/dto/PlayerDataDto\";\nimport TeamSummaryDataDto from \"@/data/dto/TeamSummaryDataDto\";\n\n@Component\nexport default class SummaryPanel extends Vue {\n\n  @Prop()\n  teamSummaryData!: TeamSummaryDataDto | undefined;\n\n  get teamName() {\n    return this.teamSummaryData?.clubTeamName;\n  }\n\n  get sessionFinished() {\n    if (this.sessionsPlanned && this.totalSessions) {\n      return this.totalSessions - this.sessionsPlanned;\n    } else {\n      return 0\n    }\n  }\n\n  get avgSessions() {\n    return this.teamSummaryData?.summaryData?.find(s => s.label === 'avgSessions')?.value;\n  }\n\n  get totalSessions() {\n    return this.teamSummaryData?.summaryData?.find(s => s.label === 'totalSessions')?.value;\n  }\n\n  get sessionsPlanned() {\n    return this.teamSummaryData?.summaryData?.find(s => s.label === 'sessionsPlanned')?.value || 0;\n  }\n\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n.box {\n  margin-top: 40px;\n  margin-right: 20px;\n  margin-left: 20px;\n  max-width: 1200px;\n}\n\n.fa-star:before {\n  content: \"\\f005\";\n  color: gold;\n}\n\n@media (max-width: 500px) {\n  .box {\n    margin-right: 5px;\n    margin-left: 5px;\n  }\n}\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/dashboard/main/components/SummaryPanel.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/dashboard/main/components/SummaryPanel.vue	(date 1618393828360)
+@@ -9,7 +9,7 @@
+             <span class="icon">
+               <i class="fas fa-star"></i>
+             </span>
+-              <span class="clubname">{{ teamName }}</span>
++              <span id="name" class="clubname">{{ teamName }}</span>
+             </span>
+           </div>
+         </div>
+@@ -89,6 +89,7 @@
+   margin-right: 20px;
+   margin-left: 20px;
+   max-width: 1200px;
++  background-color: #1e1e1e;
+ }
+ 
+ .fa-star:before {
+@@ -96,6 +97,15 @@
+   color: gold;
+ }
+ 
++.level-item .title, .level-item .subtitle {
++  margin-bottom: 0;
++  color: whitesmoke;
++}
++
++.heading {
++  color: whitesmoke;
++}
++
+ @media (max-width: 500px) {
+   .box {
+     margin-right: 5px;
+@@ -103,4 +113,8 @@
+   }
+ }
+ 
++#name {
++  color: whitesmoke;
++}
++
+ </style>
+Index: src/components/common/InputField.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div class=\"field has-text-left\">\n        <label class=\"has-text-weight-bold\" v-if=\"label\">{{this.label}}</label>\n        <div class=\"control\"\n            :class=\"iconPosition\">\n            <input :class=\"className\" :type=\"type\" :placeholder=\"placeHolder\" v-model=\"input\">\n            <span v-if=\"iconData\"\n                  class=\"icon is-small\"\n                  :class=\"alignIcon\">\n                <i :class=\"icon\"></i>\n            </span>\n        </div>\n    </div>\n</template>\n\n<script lang=\"ts\">\n\nimport { Prop, Vue, Component, Watch } from 'vue-property-decorator';\nimport {IconInputField} from '@/components/common/IconInputField';\n\n@Component\nexport default class InputField extends Vue {\n    @Prop({ default : ''}) private type!: string;\n    @Prop({ default : ''}) private placeHolder!: string;\n    @Prop({ default : ''}) private className!: string;\n    @Prop({ default : undefined}) private iconData: IconInputField | undefined;\n    @Prop({ default : undefined}) private label: string | undefined;\n    @Prop({ default : undefined}) private inputValue: string | undefined;\n\n    private inputStringValue: string = '';\n\n    @Watch('inputStringValue')\n    public returnValue(): void {\n        this.$emit('inputChanged', this.inputStringValue);\n    }\n\n    get iconPosition() {\n        if (!this.iconData?.position) {\n            return '';\n        }\n        if (this.iconData.position === 'left') {\n            return 'has-icons-left';\n        }\n        if (this.iconData.position === 'right') {\n            return 'has-icons-right';\n        }\n        console.error('Position of icon is not valid');\n        return;\n    }\n\n    get alignIcon() {\n        if (!this.iconData?.position) {\n            return '';\n        }\n        if (this.iconData.position === 'left') {\n            return 'is-left';\n        }\n        if (this.iconData.position === 'right') {\n            return 'is-right';\n        }\n    }\n\n    get icon() {\n        return this.iconData!.icon;\n    }\n\n    get input() {\n        return this.inputValue ? this.inputValue : '';\n    }\n\n    set input(newInput: string) {\n        this.inputStringValue = newInput;\n    }\n\n}\n</script>\n<style scoped>\n\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/common/InputField.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/common/InputField.vue	(date 1618400434824)
+@@ -3,7 +3,7 @@
+         <label class="has-text-weight-bold" v-if="label">{{this.label}}</label>
+         <div class="control"
+             :class="iconPosition">
+-            <input :class="className" :type="type" :placeholder="placeHolder" v-model="input">
++            <input id="text" :class="className" :type="type" :placeholder="placeHolder" v-model="input">
+             <span v-if="iconData"
+                   class="icon is-small"
+                   :class="alignIcon">
+@@ -74,7 +74,17 @@
+ 
+ }
+ </script>
+-<style scoped>
++<style scoped lang="scss">
++.textarea, .input {
++  box-shadow: inset 0 0.0625em 0.125em rgb(10 10 10 / 5%);
++  max-width: 100%;
++  width: 100%;
++  background-color: #251F1F;
++  color: whitesmoke;
++}
+ 
++.has-text-weight-bold {
++  color: whitesmoke;
++}
+ 
+ </style>
+Index: src/components/wizard/SessionWizard.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div class=\"body\">\n        <nav-bar />\n        <div class=\"wrapper\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n                    <span class=\"tag is-info is-pulled-left\">{{ LABEL_TEXT }}</span>\n                    <button class=\"delete is-pulled-right\" @click=\"navigateBack\"></button>\n                </div>\n                <div class=\"stepper\">\n                    <ul class=\"steps has-content-centered is-horizontal has-gaps\">\n                        <li v-for=\"(step, index) in SESSION_WIZARD_STEPS()\"\n                            :key=\"step.title\"\n                            class=\"steps-segment\"\n                            :class=\"{ 'is-active': index + 1 === currentStep, 'is-dashed': (index + 1) >= currentStep }\">\n                            <span class=\"steps-marker\">\n                                <span v-if=\"SESSION_WIZARD_STEPS()[index].hasIcon\" class=\"icon\">\n                                    <i :class=\"SESSION_WIZARD_STEPS()[index].iconValue\" />\n                                </span>\n                                <span v-else> {{ SESSION_WIZARD_STEPS()[index].iconValue }} </span>\n                            </span>\n                        </li>\n                    </ul>\n                    <ul v-for=\"(step, index) in SESSION_WIZARD_STEPS()\"\n                        :key=\"index\"\n                        class=\"steps-content\">\n                        <li v-if=\"(index + 1) === currentStep\"\n                            class=\"step-content\">\n                            <component\n                                v-bind:is=\"step.component\">\n                            </component>\n                        </li>\n                    </ul>\n                </div>\n                <footer class=\"footer-buttons\">\n                    <button v-if=\"this.currentStep > 1\"\n                            class=\"button\"\n                            @click=\"previousStep\"> {{ backButtonMessage }} </button>\n                    <p v-else></p>\n                    <button v-if=\"this.currentStep <= 4\"\n                            class=\"button\"\n                            @click=\"nextStep\"\n                            :disabled=\"noValidSessionDetails\">{{ nextOrFinishButton }}</button>\n                    <p v-else></p>\n                </footer>\n            </div>\n        </div>\n  </div>\n</template>\n\n<script lang=\"ts\">\nimport { Component, Vue } from 'vue-property-decorator';\nimport NavBar from '@/components/navigation/NavBar.vue';\nimport SessionDetails from '@/components/wizard/utils/SessionDetails.vue';\nimport Routes from '@/router/Routes';\nimport TeamPicker from '@/components/wizard/utils/TeamPicker.vue';\nimport SessionWizardModule from '@/store/modules/SessionWizardModule';\nimport {namespace} from 'vuex-class';\nimport ClubTeamBackend from '@/backend/ClubTeamBackend';\nimport ClubTeamDto from '@/data/dto/ClubTeamDto';\nimport PlayerDto from '@/data/dto/PlayerDto';\nimport ConfirmationPage from '@/components/wizard/utils/ConfirmationPage.vue';\nimport SessionDto from '@/data/dto/SessionDto';\nimport SessionBackend from '@/backend/SessionBackend';\n\nconst ClubTeamModuleInstance = namespace('ClubTeamModule');\nconst SessionWizardModuleInstance = namespace('SessionWizardModule');\n\n@Component({\n    components: {\n        SessionDetails,\n        NavBar\n    }\n})\nexport default class SessionWizard extends Vue {\n\n    @ClubTeamModuleInstance.Getter('clubTeamExists')\n    clubTeamExist!: boolean;\n\n    @ClubTeamModuleInstance.Getter('clubTeamPlayers')\n    clubTeamPlayers!: () => PlayerDto[];\n\n    @SessionWizardModuleInstance.Getter('sessionWizardTeamExists')\n    sessionWizardTeamExists!: boolean;\n\n    @SessionWizardModuleInstance.Getter('currentStep')\n    step!: number;\n\n    @SessionWizardModuleInstance.Getter('hasValidSessionDetails')\n    hasValidSessionDetails!: boolean;\n\n    @SessionWizardModuleInstance.Getter('session')\n    getSession!: SessionDto;\n\n    readonly LABEL_TEXT = 'Create Session';\n    backButtonMessage = 'Back';\n    nextButtonMessage = 'Next';\n\n    /*\n        Om errors te voorkomen tijdens refreshen van de pagina is het nodig dat zowel\n        tijdens de created als mounted lifecycle hooks gecheckt wordt of de\n        SessionWizardModule al bestaat binnen de store. Zo niet dan moet deze worden\n        aangemaakt.\n     */\n    created() {\n        if (this.$store.hasModule('SessionWizardModule')) {\n            return;\n        }\n        this.$store.registerModule('SessionWizardModule', SessionWizardModule);\n\n        if (this.clubTeamExist) {\n            this.initSessionWizardPlayers();\n            return;\n        }\n\n        this.getTeamDetails();\n    }\n\n    mounted() {\n        if (this.$store.hasModule('SessionWizardModule')) {\n            return;\n        }\n        this.$store.registerModule('SessionWizardModule', SessionWizardModule);\n\n        if (this.clubTeamExist) {\n            this.initSessionWizardPlayers();\n            return;\n        }\n\n        this.getTeamDetails();\n    }\n\n    beforeDestroy() {\n        if (this.$store.hasModule('SessionWizardModule')) {\n            this.$store.unregisterModule('SessionWizardModule');\n        }\n    }\n\n    initSessionWizardPlayers() {\n        const clubTeamPlayers = this.clubTeamPlayers();\n        this.$store.commit('SessionWizardModule/setTeam', clubTeamPlayers);\n    }\n\n    getTeamDetails() {\n        ClubTeamBackend.retrieveTeam().subscribe(\n            (clubTeamDto: ClubTeamDto) => {\n                this.$store.commit('ClubTeamModule/setClubTeam', clubTeamDto);\n                this.$store.commit('SessionWizardModule/setTeam', clubTeamDto.players);\n            }, (error: any) => {\n                console.error(error);\n            }\n        );\n    }\n\n    get currentStep() {\n        return this.step;\n    }\n\n    get noValidSessionDetails() {\n        return !this.hasValidSessionDetails;\n    }\n\n    get nextOrFinishButton() {\n        return this.step === 4 ? this.nextButtonMessage = 'Finish' : this.nextButtonMessage;\n    }\n\n    private async nextStep() {\n        if (this.step === 4) {\n            const session = this.getSession;\n            SessionBackend.createSession(session).subscribe(() => this.navigateBack());\n            return;\n        }\n        this.$store.commit('SessionWizardModule/setPreviousStep', this.step);\n        this.$store.commit('SessionWizardModule/setStep', 1);\n    }\n\n    private previousStep() {\n        if (this.step === 1) {\n            return;\n        }\n        if (this.nextButtonMessage === 'Finish') {\n            this.nextButtonMessage = 'Next';\n        }\n        this.$store.commit('SessionWizardModule/setPreviousStep', this.step);\n        this.$store.commit('SessionWizardModule/setStep', -1);\n    }\n\n    private navigateBack() {\n        this.$router.push({\n            name: Routes.Main\n        });\n    }\n\n    readonly SESSION_WIZARD_STEPS = () => [\n        {\n            title: 'Session Details',\n            component: SessionDetails,\n            hasIcon: true,\n            iconValue: 'far fa-calendar'\n        },\n        {\n            title: 'Select First Team',\n            component: TeamPicker,\n            hasIcon: false,\n            iconValue: 1\n        },\n        {\n            title: 'Select Second Team',\n            component: TeamPicker,\n            hasIcon: false,\n            iconValue: 2\n        },\n        {\n            title: 'Confirmation',\n            component: ConfirmationPage,\n            hasIcon: true,\n            iconValue: 'fa fa-check'\n        }\n    ]\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n.body {\n    display: flex;\n    flex-direction: column;\n}\n\n.body .wrapper {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    width: 100%;\n    height: 100%;\n}\n\n.body .wrapper .tag {\n    display: flex;\n    width: 100px;\n}\n\n.body .wrapper .box {\n    display: flex;\n    flex-direction: column;\n    margin: 5px;\n    width: 95%;\n\n    .box-header {\n        display: flex;\n        justify-content: space-between;\n    }\n\n    .stepper {\n        flex: 1;\n        margin: 20px 0 0 0;\n        padding: 0;\n\n        .steps {\n            margin: 20px 0 20px 0;\n\n        }\n\n        .steps-content .step-content {\n            margin-top: 10vh;\n\n            h1 {\n                font-size: 32px;\n                text-align: center;\n                margin: 40px 0 40px 0;\n            }\n        }\n    }\n\n    .footer-buttons {\n        display: flex;\n        justify-content: space-between;\n        margin: 5vh 0 5vh 0;\n    }\n}\n\n</style>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/wizard/SessionWizard.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/wizard/SessionWizard.vue	(date 1618399875978)
+@@ -34,11 +34,11 @@
+                 </div>
+                 <footer class="footer-buttons">
+                     <button v-if="this.currentStep > 1"
+-                            class="button"
++                            class="button is-primary is-outlined no-background"
+                             @click="previousStep"> {{ backButtonMessage }} </button>
+                     <p v-else></p>
+                     <button v-if="this.currentStep <= 4"
+-                            class="button"
++                            class="button is-primary is-outlined no-background"
+                             @click="nextStep"
+                             :disabled="noValidSessionDetails">{{ nextOrFinishButton }}</button>
+                     <p v-else></p>
+@@ -245,6 +245,7 @@
+     flex-direction: column;
+     margin: 5px;
+     width: 95%;
++    background-color: #1e1e1e;
+ 
+     .box-header {
+         display: flex;
+@@ -279,4 +280,4 @@
+     }
+ }
+ 
+-</style>
+\ No newline at end of file
++</style>
+Index: src/components/manageteam/components/TeamComponent.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n  <div class=\"box\">\n    <nav class=\"level\">\n      <div class=\"level-item has-text-centered\">\n        <div>\n          <p class=\"heading\">Team name</p>\n            <span class=\"icon-text has-text-black\">\n          <span class=\"icon\">\n            <i class=\"fas fa-star\"></i>\n          </span>\n            <span class=\"clubname\">{{ clubTeam.name }}</span>\n          </span>\n        </div>\n      </div>\n      <div class=\"level-item has-text-centered\">\n        <div>\n          <p class=\"heading\">Strikers</p>\n          <h6 class=\"subtitle is-6\">{{numberOfPlayersWithPosition('STRIKER')}}</h6>\n        </div>\n      </div>\n      <div class=\"level-item has-text-centered\">\n        <div>\n          <p class=\"heading\">Midfielders</p>\n          <h6 class=\"subtitle is-6\">{{numberOfPlayersWithPosition('MIDFIELDER')}}</h6>\n        </div>\n      </div>\n      <div class=\"level-item has-text-centered\">\n        <div>\n          <p class=\"heading\">Defenders</p>\n          <h6 class=\"subtitle is-6\">{{numberOfPlayersWithPosition('DEFENDER')}}</h6>\n        </div>\n      </div>\n      <div class=\"level-item has-text-centered\">\n        <div>\n          <p class=\"heading\">Goalkeepers</p>\n          <h6 class=\"subtitle is-6\">{{numberOfPlayersWithPosition('GOALKEEPER')}}</h6>\n        </div>\n      </div>\n      <div class=\"level-item has-text-centered\">\n        <div>\n          <p class=\"heading\">Total</p>\n          <h6 class=\"subtitle is-6\">{{ numberOfPlayers }}</h6>\n        </div>\n      </div>\n      <div class=\"level-item has-text-centered\">\n        <div>\n          <div class=\"buttons\" @click.prevent=\"editTeam\">\n            <a class=\"button is-light\">\n              Edit team\n            </a>\n          </div>\n        </div>\n      </div>\n    </nav>\n  </div>\n</template>\n\n<script lang=\"ts\">\nimport {Component, Prop, Vue} from 'vue-property-decorator';\nimport ClubTeamDto from '@/data/dto/ClubTeamDto';\n\n@Component\nexport default class TeamComponent extends Vue {\n\n    @Prop() private clubTeam! : ClubTeamDto | undefined;\n\n    private editTeam() {\n      this.$router.push('manage-team/edit');\n    }\n\n    get numberOfPlayers() {\n      return this.clubTeam?.players?.length || 0;\n    }\n\n    private numberOfPlayersWithPosition(position: string): number {\n        return this.clubTeam?.players.filter(p => p.position === position).length || 0;\n    }\n}\n\n</script>\n<style scoped lang=\"scss\">\n\n.box {\n    margin-right: 20px;\n    margin-left: 20px;\n}\n\n.title {\n  font-size: 1.5rem;\n}\n\n.fa-star:before {\n  content: \"\\f005\";\n  color: gold;\n}\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/manageteam/components/TeamComponent.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/manageteam/components/TeamComponent.vue	(date 1618393157914)
+@@ -8,7 +8,7 @@
+           <span class="icon">
+             <i class="fas fa-star"></i>
+           </span>
+-            <span class="clubname">{{ clubTeam.name }}</span>
++            <span id="name" class="clubname">{{ clubTeam.name }}</span>
+           </span>
+         </div>
+       </div>
+@@ -45,7 +45,7 @@
+       <div class="level-item has-text-centered">
+         <div>
+           <div class="buttons" @click.prevent="editTeam">
+-            <a class="button is-light">
++            <a class="button is-primary is-outlined">
+               Edit team
+             </a>
+           </div>
+@@ -83,12 +83,26 @@
+ .box {
+     margin-right: 20px;
+     margin-left: 20px;
++    background-color: #1e1e1e;
+ }
+ 
+ .title {
+   font-size: 1.5rem;
+ }
+ 
++.heading {
++  color: whitesmoke;
++}
++
++#name {
++  color: whitesmoke;
++}
++
++.level-item .title, .level-item .subtitle {
++  margin-bottom: 0;
++  color: whitesmoke;
++}
++
+ .fa-star:before {
+   content: "\f005";
+   color: gold;
+Index: src/components/dashboard/main/DashboardMain.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n  <div class=\"page-wrapper\">\n    <nav-bar/>\n    <HeroBanner label=\"Dashboard\"/>\n    <div class=\"columns\">\n      <SideMenu/>\n      <div class=\"column\">\n        <SummaryPanel v-if=\"teamSummaryData.summaryData\" :team-summary-data=\"teamSummaryData\"/>\n        <LineChartPanel v-if=\"chartData.datasets\" :chart-data=\"chartData\"/>\n        <Table/>\n      </div>\n    </div>\n    <Footer/>\n  </div>\n<!--  </div>-->\n</template>\n<script lang=\"ts\">\n\nimport {Vue} from \"vue-property-decorator\";\nimport Component from \"vue-class-component\";\nimport NavBar from \"@/components/navigation/NavBar.vue\";\nimport HeroBanner from \"@/components/common/HeroBanner.vue\";\nimport SideMenu from \"@/components/navigation/DropdownMenu.vue\";\nimport Table from \"@/components/dashboard/main/components/Table.vue\";\nimport DashboardBackend from \"@/backend/DashboardBackend\";\nimport PlayerDataDto from \"@/data/dto/PlayerDataDto\";\nimport Footer from \"@/components/navigation/Footer.vue\";\nimport SummaryPanel from \"@/components/dashboard/main/components/SummaryPanel.vue\"\nimport LineChartPanel from \"@/components/dashboard/main/components/LineChartPanel.vue\";\nimport TeamSummaryDataDto from \"@/data/dto/TeamSummaryDataDto\";\n\n\n\nconst NOT_VALUES = ['totalSessions', 'avgSessions', 'sessionsPlanned'];\n\n@Component({\n  components: {\n    HeroBanner,\n    NavBar,\n    SideMenu,\n    Table,\n    Footer,\n    SummaryPanel,\n    LineChartPanel\n  }\n})\nexport default class DashboardMain extends Vue {\n\n  teamSummaryData: TeamSummaryDataDto = new TeamSummaryDataDto();\n  fullPage = true;\n  chartData = {};\n\n  created() {\n   this.retrieveTeamOverview();\n   this.retrieveSummary()\n  }\n\n  get isActive(): boolean {\n    return true;\n  }\n\n  retrieveTeamOverview(){\n    let loader = this.initLoader();\n    let playerDataDtos: PlayerDataDto[] = [];\n    DashboardBackend.retrieveTeamOverviewData()\n        .subscribe(\n            (playerDataCollection: PlayerDataDto[]) => {\n              playerDataCollection.forEach(playerData => {\n                playerDataDtos.push(playerData);\n              });\n            }, (error: any) => {\n              console.error(error);\n              loader.hide();\n              return;\n            }, () => {\n              this.$store.commit('DashboardModule/setClubTeamOverview', playerDataDtos);\n              loader.hide();\n            }\n        );\n  }\n\n  retrieveSummary() {\n    DashboardBackend.retrieveSummaryData()\n        .subscribe(teamSummaryData => {\n          this.teamSummaryData = teamSummaryData;\n          if(teamSummaryData) {\n            this.chartData = this.getChartData(teamSummaryData);\n          }\n        });\n  }\n\n  getChartData(teamSummaryData: TeamSummaryDataDto) {\n    return {\n      labels: ['3 weeks ago', '3 weeks ago', '2 weeks ago', 'Last 7 days'],\n      datasets: [ {\n        label: 'Sessions per week',\n        borderColor: '#50ffe5',\n        fill: false,\n        data: teamSummaryData.summaryData!.filter(s => !NOT_VALUES.includes(s.label!)).map(s => s.value)\n        }\n      ]\n    }\n  }\n\n  initLoader() {\n    return this.$loading.show({\n      opacity: 0.2,\n      color: '#50ffe5',\n      backgroundColor: '#ffffff',\n      width: 40,\n      canCancel: true\n    });\n  }\n}\n\n</script>\n\n<style scoped lang=\"scss\">\n\n.page-wrapper {\n  display: flex;\n  flex-direction: column;\n  height: 100vh;\n}\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/dashboard/main/DashboardMain.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/dashboard/main/DashboardMain.vue	(date 1618404769502)
+@@ -52,7 +52,7 @@
+ 
+   created() {
+    this.retrieveTeamOverview();
+-   this.retrieveSummary()
++   // this.retrieveSummary()
+   }
+ 
+   get isActive(): boolean {
+@@ -67,14 +67,15 @@
+             (playerDataCollection: PlayerDataDto[]) => {
+               playerDataCollection.forEach(playerData => {
+                 playerDataDtos.push(playerData);
++                console.log(playerData);
+               });
+             }, (error: any) => {
+               console.error(error);
+               loader.hide();
+               return;
+             }, () => {
+-              this.$store.commit('DashboardModule/setClubTeamOverview', playerDataDtos);
+               loader.hide();
++              this.$store.commit('DashboardModule/setClubTeamOverview', playerDataDtos);
+             }
+         );
+   }
+@@ -92,6 +93,7 @@
+   getChartData(teamSummaryData: TeamSummaryDataDto) {
+     return {
+       labels: ['3 weeks ago', '3 weeks ago', '2 weeks ago', 'Last 7 days'],
++      color: '#ffffff',
+       datasets: [ {
+         label: 'Sessions per week',
+         borderColor: '#50ffe5',
+Index: src/components/manageteam/components/CreateClubTeam.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n  <div class=\"body\">\n    <nav-bar/>\n      <div class=\"box\">\n          <span class=\"tag is-info is-pulled-left\">No team</span>\n            <div class=\"container has-text-centered\">\n              <h5 class=\"title is-5\">No team configured yet</h5>\n              <h6 class=\"subtitle is-6\">\n                You haven't configured a team yet. Before moving any further you need to add a team via 'add team' below.\n              </h6>\n              <span class=\"icon is-large\">\n                <i class=\"fas fa-arrow-down\"></i>\n              </span>\n            </div>\n            <div class=\"control\">\n            <div class=\"has-text-centered\">\n              <a class=\"button is-centered is-primary is-outlined\" @click=\"navigateTeamWizard\">Add team</a>\n            </div>\n        </div>\n      </div>\n  </div>\n</template>\n\n<script lang=\"ts\">\nimport {Component, Vue} from \"vue-property-decorator\";\nimport NavBar from \"@/components/navigation/NavBar.vue\";\nimport {namespace} from \"vuex-class\";\n\nconst Auth = namespace(\"Auth\");\n\n@Component({\n  components: {\n    NavBar\n  }\n})\nexport default class CreateClubTeam extends Vue {\n\n  @Auth.State(\"user\")\n  private currentUser!: any;\n\n  private navigateTeamWizard() {\n    this.$router.push('manage-team/edit');\n  }\n\n  created() {\n    if (!this.currentUser) {\n      this.$router.push(\"/login\");\n    }\n  }\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n.box {\n  margin: 20px;\n}\n\n.title.is-5 {\n  font-size: 1.25rem;\n  margin-top: 80px;\n}\n\n.fa-arrow-down:before {\n  font-size: 2em;\n  color: #40cabc;\n}\n\n.subtitle.is-6 {\n  font-size: 1rem;\n  margin-top: 20px;\n}\n\n.button.is-primary.is-outlined {\n  background-color: transparent;\n  border-color: turquoise;\n  color: turquoise;\n  margin-top: 40px;\n}\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/manageteam/components/CreateClubTeam.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/manageteam/components/CreateClubTeam.vue	(date 1618397189480)
+@@ -54,6 +54,7 @@
+ 
+ .box {
+   margin: 20px;
++  background-color: #1e1e1e;
+ }
+ 
+ .title.is-5 {
+@@ -78,4 +79,8 @@
+   margin-top: 40px;
+ }
+ 
++.modal-close{
++  background-color: whitesmoke;
++}
++
+ </style>
+Index: src/components/sessions/game/SessionGamePlayerDetails.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div class=\"media-content has-text-centered\">\n        <p class=\" is-size-6\"> {{ playerName }} </p>\n        <div class=\"goal-icons\">\n            <div v-if=\"playerGoals === 0\">\n                <i class=\"far fa-futbol fa fa-disabled\"></i>\n            </div>\n            <transition-group\n                v-if=\"playerGoals >= 1 && playerGoals <= 5\"\n                name=\"slide-fade\"\n                class=\"multiple-max-five\">\n                <div\n                    v-for=\"goal in playerGoals\"\n                    :key=\"goal\">\n                    <i class=\"far fa-futbol fa\"></i>\n                </div>\n            </transition-group>\n            <div v-if=\"playerGoals > 5\">\n                <i class=\"far fa-futbol fa\">\n                    <span class=\"badge\"> {{ playerGoals }} </span>\n                </i>\n            </div>\n        </div>\n    </div>\n</template>\n\n<script lang=\"ts\">\nimport {Component, Prop, Vue} from 'vue-property-decorator';\n\n@Component\nexport default class SessionGamePlayerDetails extends Vue {\n    @Prop() playerName!: string;\n    @Prop() playerGoals!: number;\n\n}\n</script>\n\n\n<style scoped lang=\"scss\">\n\n.media-content{\n    display: flex;\n    flex-direction: column;\n\n    .goal-icons {\n        display: flex;\n        align-self: center;\n        justify-content: center;\n        max-width: 40%;\n    }\n\n    .multiple-max-five {\n        display: flex;\n    }\n\n    .slide-fade-enter {\n        transform: translateX(30px);\n        opacity: 0;\n    }\n\n    .slide-fade-enter-active {\n        transition: .5s ease;\n    }\n}\n\n.fa-disabled {\n    opacity: 0.1;\n    cursor: not-allowed;\n}\n\n.is-size-6 {\n  font-size: 0.9rem !important;\n  font-weight: 500;\n}\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/sessions/game/SessionGamePlayerDetails.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/sessions/game/SessionGamePlayerDetails.vue	(date 1618401131168)
+@@ -47,6 +47,7 @@
+         align-self: center;
+         justify-content: center;
+         max-width: 40%;
++        color: whitesmoke;
+     }
+ 
+     .multiple-max-five {
+@@ -71,6 +72,7 @@
+ .is-size-6 {
+   font-size: 0.9rem !important;
+   font-weight: 500;
++  color: whitesmoke;
+ }
+ 
+ </style>
+Index: src/assets/style.scss
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>$primary: turquoise;\n$primary-blurred: rgb(64, 224, 208, 0.05);\n@import '~bulma';\n\n$steps-active-color: $primary;\n$steps-completed-color: $primary;\n@import '~bulma-o-steps';\n@import '~bulma-calendar';\n\n@import '~nprogress/nprogress.css';\n\n.vue-notification-session-wizard {\n  background: $primary-blurred;\n  border: 1px solid $primary;\n  padding: 5px;\n  margin-top:2vh;\n  margin-bottom: 5vh;\n  border-radius: 10px;\n  font-size: 12px;\n  font-family: BlinkMacSystemFont, -apple-system, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\",\n  \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n\n  .notification-title {\n    color: black;\n    text-align: center;\n    opacity: 0.7 !important;\n  }\n}\n\n* {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/assets/style.scss	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/assets/style.scss	(date 1618399651317)
+@@ -21,7 +21,7 @@
+   "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+ 
+   .notification-title {
+-    color: black;
++    color: whitesmoke;
+     text-align: center;
+     opacity: 0.7 !important;
+   }
+@@ -32,3 +32,14 @@
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+ }
++
++html,
++body {
++  margin: 0;
++  padding: 0;
++  background-color: #0b0b0b;
++
++}
++
++
++
+Index: src/components/common/HeroBanner.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n  <section class=\"hero is-light\">\n    <div class=\"hero-body has-text-centered\">\n      <div class=\"container\">\n        <h6 class=\"subtitle is-6\">{{ label }}</h6>\n      </div>\n    </div>\n  </section>\n</template>\n\n<script lang=\"ts\">\nimport {Prop, Vue} from \"vue-property-decorator\";\nimport Component from \"vue-class-component\";\n\n@Component\nexport default class HeroBanner extends Vue {\n\n  @Prop() private label!: string;\n\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n.hero-body {\n  padding: 30px;\n}\n\n.subtitle {\n  font-size: 1.25rem;\n  font-weight: 300;\n  line-height: 1.25;\n  color: rgb(107 107 107 / 90%);\n}\n\n.hero.is-light .subtitle {\n  color: rgb(109 108 108 / 90%);\n}\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/common/HeroBanner.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/common/HeroBanner.vue	(date 1618391246320)
+@@ -1,5 +1,5 @@
+ <template>
+-  <section class="hero is-light">
++  <section class="hero is-dark">
+     <div class="hero-body has-text-centered">
+       <div class="container">
+         <h6 class="subtitle is-6">{{ label }}</h6>
+@@ -30,11 +30,13 @@
+   font-size: 1.25rem;
+   font-weight: 300;
+   line-height: 1.25;
+-  color: rgb(107 107 107 / 90%);
++  //color: rgb(107 107 107 / 90%);
++  color: #353535;
+ }
+ 
+-.hero.is-light .subtitle {
+-  color: rgb(109 108 108 / 90%);
++.hero.is-light {
++  //color: rgb(109 108 108 / 90%);
++  color: #353535;
+ }
+ 
+ </style>
+Index: src/components/navigation/Footer.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <footer class=\"footer\">\n        <p>\n            <strong>GoalKeeper</strong> by <a href=\"\">GoalKeeper</a>. The source code is licensed\n            <a href=\"http://opensource.org/licenses/mit-license.php\">GC inc</a>.\n        </p>\n    </footer>\n</template>\n\n<script lang=\"ts\">\n\nimport { Component, Vue } from \"vue-property-decorator\";\n\n@Component\nexport default class Footer extends Vue {\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n.footer {\n    display: flex;\n    align-self: flex-end;\n    justify-content: center;\n    bottom: 0;\n    width: 100%;\n    z-index: 0;\n    padding: 1em;\n    margin-top: auto;\n}\n\n.footer p {\n    font-size: 75%;\n    text-align: center;\n}\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/navigation/Footer.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/navigation/Footer.vue	(date 1618391544727)
+@@ -27,11 +27,18 @@
+     z-index: 0;
+     padding: 1em;
+     margin-top: auto;
++    background-color: #1c1c1c;
+ }
+ 
+ .footer p {
+     font-size: 75%;
+     text-align: center;
++    color: whitesmoke;
++}
++
++strong {
++  color: whitesmoke;
++  font-weight: 700;
+ }
+ 
+ </style>
+Index: src/components/navigation/DropdownMenu.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div class=\"column\" id=\"left-column\">\n      <div :class=\"getClass()\">\n        <div class=\"dropdown-trigger\">\n          <button class=\"button\" @click=\"changeStatus\" aria-haspopup=\"true\" aria-controls=\"dropdown-menu\">\n            <span>Options</span>\n            <span class=\"icon is-small\">\n            <i class=\"fas fa-angle-down\" aria-hidden=\"true\"></i>\n          </span>\n          </button>\n        </div>\n        <div class=\"dropdown-menu\" id=\"dropdown-menu\" role=\"menu\">\n          <div class=\"dropdown-content\">\n            <a href=\"#\" class=\"dropdown-item is-active\">\n              Team overview\n            </a>\n<!--            <a class=\"dropdown-item\">-->\n<!--              Most wins-->\n<!--            </a>-->\n<!--            <a href=\"#\" class=\"dropdown-item\">-->\n<!--              Most goals-->\n<!--            </a>-->\n<!--            <a href=\"#\" class=\"dropdown-item\">-->\n<!--              Effective combinations-->\n<!--            </a>-->\n          </div>\n        </div>\n      </div>\n    </div>\n</template>\n\n<script lang=\"ts\">\nimport {Vue} from \"vue-property-decorator\";\nimport Component from \"vue-class-component\";\n\n@Component\nexport default class SideMenu extends Vue {\n\n  private showDropdown: boolean = false;\n\n  created() {\n    this.showDropdown = false;\n  }\n\n  changeStatus() {\n    this.showDropdown = !this.showDropdown;\n  }\n\n  getClass(): string {\n    if (this.showDropdown) {\n      return 'dropdown is-pulled-right is-right is-active';\n    } else {\n      return 'dropdown is-pulled-right is-right';\n    }\n  }\n\n\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n@media screen and (max-width: 1023px) {\n  .dropdown {\n    max-width: 150px;\n    margin-top: 20px;\n    margin-bottom: 20px;\n    right: 30px;\n    margin-left: 100px;\n  }\n}\n\n@media screen and (min-width: 767px) {\n  .dropdown {\n    max-width: 150px;\n    margin-top: 50px;\n    margin-bottom: 20px;\n    right: 30px;\n    margin-left: 100px;\n  }\n}\n\n\na.dropdown-item.is-active, button.dropdown-item.is-active {\n  background-color: turquoise;\n  color: #fff;\n}\n\n#left-column {\n  display: block;\n  flex-basis: 0;\n  flex-grow: 0.2;\n  flex-shrink: 1;\n  padding: 0.75rem;\n}\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/navigation/DropdownMenu.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/navigation/DropdownMenu.vue	(date 1618393701131)
+@@ -2,7 +2,7 @@
+     <div class="column" id="left-column">
+       <div :class="getClass()">
+         <div class="dropdown-trigger">
+-          <button class="button" @click="changeStatus" aria-haspopup="true" aria-controls="dropdown-menu">
++          <button class="button is-primary is-outlined" @click="changeStatus" aria-haspopup="true" aria-controls="dropdown-menu">
+             <span>Options</span>
+             <span class="icon is-small">
+             <i class="fas fa-angle-down" aria-hidden="true"></i>
+@@ -67,6 +67,7 @@
+     margin-bottom: 20px;
+     right: 30px;
+     margin-left: 100px;
++    background-color: #2d2d2d;
+   }
+ }
+ 
+@@ -80,6 +81,9 @@
+   }
+ }
+ 
++.dropdown-content {
++  background-color: #363636;
++}
+ 
+ a.dropdown-item.is-active, button.dropdown-item.is-active {
+   background-color: turquoise;
+Index: src/components/accessmanagement/Register.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n  <div class=\"columns is-vcentered\">\n    <div class=\"login column is-4 \">\n      <section class=\"section\">\n        <div class=\"4\">\n          <div class=\"has-text-centered\">\n            <img src=\"../../assets/images/logo_goalkeeper.png\" width=\"250\"  alt=\"\">\n          </div>\n        </div>\n        <div class=\"mt-6\" v-if=\"!successful\">\n          <p v-if=\"message.length > 0\" class=\"help is-danger\">{{ message }}</p>\n          <p v-if=\"!usernameValid\" class=\"help is-danger\">Please enter a valid username</p>\n          <InputField class-name=\"input is-success\" type=\"text\" @inputChanged=\"setUsername\" place-holder=\"Username\" :iconData=\"{ icon: 'fas fa-user', position: 'left' }\" :input-value=\"user.username\"></InputField>\n          <p v-if=\"!firstNameValid\" class=\"help is-danger\">Please enter a valid first name</p>\n          <InputField class-name=\"input is-success\" type=\"text\" @inputChanged=\"setFirstName\" place-holder=\"first name\" :iconData=\"{ icon: 'fas fa-user', position: 'left' }\" :input-value=\"user.firstName\"></InputField>\n          <p v-if=\"!lastNameValid\" class=\"help is-danger\">Please enter a valid last name</p>\n          <InputField class-name=\"input is-success\" type=\"text\" @inputChanged=\"setLastName\" place-holder=\"last name\" :iconData=\"{ icon: 'fas fa-user', position: 'left' }\" :input-value=\"user.lastName\"></InputField>\n          <p v-if=\"!emailValid\" class=\"help is-danger\">Please enter an email</p>\n          <InputField class-name=\"input is-success\" type=\"text\" @inputChanged=\"setEmail\" place-holder=\"email\" :iconData=\"{ icon: 'fas fa-user', position: 'left' }\" :input-value=\"user.email\"></InputField>\n          <p v-if=\"!emailUnique\" class=\"help is-danger\">Please make sure both emails match</p>\n          <InputField class-name=\"input is-success\" type=\"text\" @inputChanged=\"setSecondaryEmail\" place-holder=\"confirm email\" :iconData=\"{ icon: 'fas fa-user', position: 'left' }\" :input-value=\"secondaryEmail\"></InputField>\n          <p v-if=\"!passwordValid\" class=\"help is-danger\">Please enter a valid password</p>\n          <InputField class-name=\"input is-success\" type=\"password\" @inputChanged=\"setPassword\" place-holder=\"password\" :iconData=\"{ icon: 'fa fa-key', position: 'left' }\" :input-value=\"user.password\"></InputField>\n          <p v-if=\"!passwordUnique\" class=\"help is-danger\">Please make sure both passwords match</p>\n          <InputField class-name=\"input is-success\" type=\"password\" @inputChanged=\"setSecondaryPassword\" place-holder=\"confirm password\" :iconData=\"{ icon: 'fa fa-key', position: 'left' }\" :input-value=\"secondaryPassword\"></InputField>\n          <div class=\"has-text-centered\">\n            <a class=\"button is-centered is-primary is-outlined\" @click=\"handleRegister\">Create account</a>\n          </div>\n        </div>\n      </section>\n      <section>\n        <div class=\"has-text-centered\" v-if=\"successful\">\n          <span class=\"icon is-large\">\n            <span class=\"fa-stack fa-lg\">\n            <i class=\"fas fa-check\"></i>\n            </span>\n          </span>\n          <h2 class=\"subtitle\">Succes! Welcome to Goal-keeper!</h2>\n          <div class=\"has-text-centered\">\n            <a class=\"button is-centered is-primary is-outlined\" @click=\"navigateToLogin\">Go to login</a>\n          </div>\n        </div>\n      </section>\n    </div>\n    <div id=\"particles-js\" class=\"interactive-bg column is-8\">\n    </div>\n  </div>\n</template>\n\n<script lang=\"ts\">\nimport { Component, Vue } from \"vue-property-decorator\";\nimport { namespace } from \"vuex-class\";\nimport InputField from \"@/components/common/InputField.vue\";\nimport SignupRequestDto from \"@/data/dto/SignupRequestDto\";\nimport {IconInputField} from '@/components/common/IconInputField';\n\nconst Auth = namespace(\"Auth\");\n\n@Component({\n  components: {\n    InputField\n  }\n})\nexport default class Register extends Vue {\n  private user: SignupRequestDto = { username: \"\", firstName: \"\", lastName: \"\", email: \"\", password: \"\" };\n\n  private iconData: IconInputField | undefined;\n  private submitted: boolean = false;\n  private successful: boolean = false;\n  private message: string = \"\";\n  private secondaryPassword: string = \"\";\n  private secondaryEmail: string = \"\";\n\n  private usernameValid: boolean = true;\n  private firstNameValid: boolean = true;\n  private lastNameValid: boolean = true;\n  private emailValid: boolean = true;\n  private emailUnique: boolean = true;\n  private passwordValid: boolean = true;\n  private passwordUnique: boolean = true;\n\n\n  @Auth.Getter\n  private isLoggedIn!: boolean;\n\n  @Auth.Action\n  private register!: (data: any) => Promise<any>;\n\n  mounted() {\n    if (this.isLoggedIn) {\n      this.$router.push(\"/\");\n    }\n  }\n\n  private setUsername(username: string) {\n    this.user.username = username;\n  }\n\n  private setFirstName(firstName: string) {\n    this.user.firstName = firstName;\n  }\n\n  private setLastName(lastName: string) {\n    this.user.lastName = lastName;\n  }\n\n  private setEmail(email: string) {\n    this.user.email = email;\n  }\n\n  private setSecondaryEmail(email: string) {\n    this.secondaryEmail = email;\n  }\n\n  private setPassword(password: string) {\n    this.user.password = password;\n  }\n\n  private setSecondaryPassword(password: string) {\n    this.secondaryPassword = password;\n  }\n\n  private validateForm(): boolean {\n    this.usernameValid = this.user.username?.length !> 0;\n    this.firstNameValid = this.user.firstName?.length !> 0;\n    this.lastNameValid = this.user.lastName?.length !> 0;\n    this.emailValid = this.user.email?.length !> 0;\n    this.emailUnique = this.user.email === this.secondaryEmail;\n    this.passwordValid = this.user.password?.length !> 0;\n    this.passwordUnique = this.user.password === this.secondaryPassword;\n    return this.usernameValid && this.firstNameValid && this.lastNameValid\n        && this.emailValid && this.emailUnique && this.passwordValid && this.passwordUnique;\n  }\n\n  private navigateToLogin() {\n    this.$router.push(\"/login\");\n  }\n\n  handleRegister() {\n    this.message = \"\";\n    this.submitted = true;\n    let valid = this.validateForm();\n    if (valid) {\n      this.register(this.user).then(\n          (response) => {\n            this.message = response.message;\n            this.successful = true;\n          },\n          (error) => {\n            this.message = error.replace(\"Error: \", \"\");\n            this.successful = false;\n          },\n      );\n    }\n  }\n}\n</script>\n\n<style scoped lang=\"scss\">\n.interactive-bg {\n  height: 100vh;\n  background-color: #00d1b2;\n  -webkit-box-shadow: inset 24px 4px 64px -24px rgba(71,71,71,1);\n  -moz-box-shadow: inset 24px 4px 64px -24px rgba(71,71,71,1);\n  box-shadow: inset 24px 4px 64px -24px rgba(71,71,71,1);\n  padding: 0;\n}\n@media (max-width: 769px) {\n  .interactive-bg{\n    display: none\n  }\n}\n\n.fa-check:before {\n  content: \"\\f00c\";\n  font-size: 2em;\n  color: #40cabc;\n}\n\n.subtitle {\n  color: #4a4a4a;\n  font-size: 1.25rem;\n  font-weight: 400;\n  line-height: 1.25;\n  padding-top: 30px;\n}\n\n.input {\n  border-radius: 50px;\n}\n\n.button {\n  margin-top: 20px;\n  margin-bottom: 20px;\n  min-width: 150px;\n}\n\n.columns{\n  margin: 0;\n}\n\n.help.is-danger {\n  color: #dc3545;\n  padding-bottom: 3px;\n}\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/accessmanagement/Register.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/accessmanagement/Register.vue	(date 1618390611855)
+@@ -4,7 +4,7 @@
+       <section class="section">
+         <div class="4">
+           <div class="has-text-centered">
+-            <img src="../../assets/images/logo_goalkeeper.png" width="250"  alt="">
++            <img src="../../assets/images/logo_goalkeeper_white.png" width="250"  alt="">
+           </div>
+         </div>
+         <div class="mt-6" v-if="!successful">
+@@ -197,6 +197,8 @@
+ 
+ .columns{
+   margin: 0;
++  background-color: #1f1f1f;
++  min-height: 700px;
+ }
+ 
+ .help.is-danger {
+Index: src/components/accessmanagement/Login.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div class=\"columns is-vcentered\">\n        <div class=\"login column is-4 \">\n            <section class=\"section\">\n                <div class=\"4\">\n                    <div class=\"has-text-centered\">\n                        <img src=\"../../assets/images/logo_goalkeeper.png\" width=\"250\" alt=\"\">\n                    </div>\n                </div>\n                <div class=\"mt-6\">\n                    <p v-if=\"message.length > 0\"\n                       class=\"help is-danger\">\n                        {{ message }}\n                    </p>\n                    <p v-if=\"!usernameValid\"\n                       class=\"help is-danger\">\n                        Please enter an username or email\n                    </p>\n                    <InputField\n                        class-name=\"input is-success\"\n                        type=\"text\"\n                        @inputChanged=\"setUsername\"\n                        place-holder=\"Username or email\"\n                        :iconData=\"{ icon: 'fas fa-user', position: 'left'}\"\n                        :input-value=\"user.username\">\n                    </InputField>\n                    <p\n                        v-if=\"!passwordValid\"\n                        class=\"help is-danger\">\n                        Please enter a password\n                    </p>\n                    <InputField\n                        class-name=\"input is-success\"\n                        type=\"password\"\n                        @inputChanged=\"setPassword\"\n                        place-holder=\"password\"\n                        :iconData=\"{ icon: 'fa fa-key', position: 'left'}\"\n                        :input-value=\"user.password\">\n                    </InputField>\n                    <div class=\"has-text-centered\">\n                        <a class=\"button is-centered is-primary is-outlined\" @click=\"handleLogin\">Login</a>\n                    </div>\n                    <div class=\"has-text-centered\">\n                      <div>\n                        <router-link to=\"/signup\" exact>Sign up</router-link>\n                      </div>\n                      <div>\n                        <router-link to=\"/forgot-password\" exact>Forgot password</router-link>\n                      </div>\n                    </div>\n                </div>\n            </section>\n        </div>\n        <div id=\"particles-js\" class=\"interactive-bg column is-8\">\n        </div>\n    </div>\n</template>\n\n<script lang=\"ts\">\nimport { Component, Vue } from \"vue-property-decorator\";\nimport { namespace } from \"vuex-class\";\nimport InputField from \"@/components/common/InputField.vue\";\n\nconst Auth = namespace(\"Auth\");\n\n@Component({\n    components: {\n        InputField\n    }\n})\nexport default class Login extends Vue {\n    private user = {\n        username: '',\n        password: ''\n    };\n    private loading: boolean = false;\n    private message: string = \"\";\n    private usernameValid: boolean = true;\n    private passwordValid: boolean = true;\n\n    @Auth.Getter('isLoggedIn')\n    private isLoggedIn!: boolean;\n\n    @Auth.Action\n    private login!: (data: any) => Promise<any>;\n\n    created() {\n        if (this.isLoggedIn) {\n            this.$router.push('/');\n            }\n    }\n\n    private setPassword(password: string) {\n        this.user.password = password;\n    }\n\n    private setUsername(username: string) {\n        this.user.username = username;\n    }\n\n    private validateForm(): boolean {\n        this.message = '';\n        this.usernameValid = this.user.username?.length !> 0;\n        this.passwordValid = this.user.password?.length !> 0;\n        return this.usernameValid && this.passwordValid;\n    }\n\n    handleLogin() {\n        this.loading = true;\n        let isValid = this.validateForm();\n        if (!isValid) {\n            this.loading = false;\n            return;\n        }\n        if (this.user.username && this.user.password) {\n            this.login(this.user).then(\n                () => {\n                    this.$router.push(\"/\");\n                },\n                (error) => {\n                    this.loading = false;\n                    if (error === \"Bad credentials\") {\n                        this.message = \"The used combination of username/email and password does not exist\";\n                    } else {\n                        this.message = \"Oops, something went wrong..\";\n                    }\n                }\n            );\n        }\n    }\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n.interactive-bg {\n    height: 100vh;\n    background-color: #00d1b2;\n    -webkit-box-shadow: inset 24px 4px 64px -24px rgba(71,71,71,1);\n    -moz-box-shadow: inset 24px 4px 64px -24px rgba(71,71,71,1);\n    box-shadow: inset 24px 4px 64px -24px rgba(71,71,71,1);\n    padding: 0;\n}\n@media (max-width: 769px) {\n    .interactive-bg{\n        display: none\n    }\n}\n\n.input {\n    //border-radius: 50px;\n}\n\n.button {\n    margin-top: 20px;\n    margin-bottom: 20px;\n    min-width: 150px;\n}\n\n.columns{\n    margin: 0;\n}\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/accessmanagement/Login.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/accessmanagement/Login.vue	(date 1618404399628)
+@@ -4,7 +4,7 @@
+             <section class="section">
+                 <div class="4">
+                     <div class="has-text-centered">
+-                        <img src="../../assets/images/logo_goalkeeper.png" width="250" alt="">
++                        <img src="../../assets/images/logo_goalkeeper_white.png" width="250" alt="">
+                     </div>
+                 </div>
+                 <div class="mt-6">
+@@ -17,7 +17,7 @@
+                         Please enter an username or email
+                     </p>
+                     <InputField
+-                        class-name="input is-success"
++                        class-name="input is-primary"
+                         type="text"
+                         @inputChanged="setUsername"
+                         place-holder="Username or email"
+@@ -30,7 +30,7 @@
+                         Please enter a password
+                     </p>
+                     <InputField
+-                        class-name="input is-success"
++                        class-name="input is-primary"
+                         type="password"
+                         @inputChanged="setPassword"
+                         place-holder="password"
+@@ -159,6 +159,12 @@
+ 
+ .columns{
+     margin: 0;
++    background-color: #1f1f1f;
++    min-height: 700px;
++}
++
++.section {
++
+ }
+ 
+ </style>
+Index: src/components/wizard/utils/SessionDetails.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div>\n        <input-field\n            class-name=\"input is-primary\"\n            type=\"text\"\n            label=\"Name\"\n            place-holder=\"Choose a session name\"\n            :input-value=\"name\"\n            @inputChanged=\"setName\"></input-field>\n        <input-field\n            class-name=\"input is-primary\"\n            type=\"number\"\n            label=\"Duration\"\n            place-holder=\"Duration is in minutes\"\n            :input-value=\"minutes\"\n            @inputChanged=\"setMinutes\"></input-field>\n        <date-picker :date=\"date\" @dateChanged=\"setDate\"/>\n    </div>\n</template>\n\n<script lang=\"ts\">\nimport {Component, Vue} from 'vue-property-decorator';\nimport DatePicker from '@/components/wizard/utils/DatePicker.vue';\nimport InputField from '@/components/common/InputField.vue';\nimport {namespace} from 'vuex-class';\n\nconst SessionWizardModuleInstance = namespace('SessionWizardModule');\n\n@Component({\n    components: {\n        InputField,\n        DatePicker\n    }\n})\nexport default class SessionDetails extends Vue {\n\n    @SessionWizardModuleInstance.State('step')\n    currentStep!: number;\n\n    @SessionWizardModuleInstance.State('previousStep')\n    previousStep!: number;\n\n    @SessionWizardModuleInstance.State('name')\n    sessionName: string | undefined;\n\n    @SessionWizardModuleInstance.State('duration')\n    sessionDuration: number | undefined;\n\n    @SessionWizardModuleInstance.State('date')\n    sessionDate: Date | undefined;\n\n    created() {\n        if (this.previousStep > this.currentStep) {\n            return;\n        }\n    }\n\n    get name() {\n        return this.sessionName ? this.sessionName : '';\n    }\n\n    get minutes() {\n        return this.sessionDuration ? this.sessionDuration : '';\n    }\n\n    get date() {\n        return this.sessionDate ? this.sessionDate : undefined;\n    }\n\n    private setName(name: string) {\n        this.$store.commit('SessionWizardModule/setSessionName', name);\n    }\n\n    private setMinutes(minutesArg: string) {\n        const minutes = Number.parseInt(minutesArg);\n        if (isNaN(minutes)) {\n            console.error('Input is not a number');\n            return;\n        }\n        this.$store.commit('SessionWizardModule/setSessionDuration', minutes);\n    }\n\n    private setDate(date: Date) {\n        this.$store.commit('SessionWizardModule/setSessionDate', date);\n    }\n\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n</style>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/wizard/utils/SessionDetails.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/wizard/utils/SessionDetails.vue	(date 1618400382172)
+@@ -89,4 +89,6 @@
+ 
+ <style scoped lang="scss">
+ 
+-</style>
+\ No newline at end of file
++
++
++</style>
+Index: package-lock.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- package-lock.json	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ package-lock.json	(date 1618404836727)
+@@ -3097,122 +3097,6 @@
+         "tslint": "^5.20.1",
+         "webpack": "^4.0.0",
+         "yorkie": "^2.0.0"
+-      },
+-      "dependencies": {
+-        "ansi-styles": {
+-          "version": "4.3.0",
+-          "resolved": "https://registry.npmjs.org/ansi-styles/-/ansi-styles-4.3.0.tgz",
+-          "integrity": "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==",
+-          "dev": true,
+-          "optional": true,
+-          "requires": {
+-            "color-convert": "^2.0.1"
+-          }
+-        },
+-        "chalk": {
+-          "version": "4.1.0",
+-          "resolved": "https://registry.npmjs.org/chalk/-/chalk-4.1.0.tgz",
+-          "integrity": "sha512-qwx12AxXe2Q5xQ43Ac//I6v5aXTipYrSESdOgzrN+9XjgEpyjpKuvSGaN4qE93f7TQTlerQQ8S+EQ0EyDoVL1A==",
+-          "dev": true,
+-          "optional": true,
+-          "requires": {
+-            "ansi-styles": "^4.1.0",
+-            "supports-color": "^7.1.0"
+-          }
+-        },
+-        "color-convert": {
+-          "version": "2.0.1",
+-          "resolved": "https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz",
+-          "integrity": "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==",
+-          "dev": true,
+-          "optional": true,
+-          "requires": {
+-            "color-name": "~1.1.4"
+-          }
+-        },
+-        "color-name": {
+-          "version": "1.1.4",
+-          "resolved": "https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz",
+-          "integrity": "sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==",
+-          "dev": true,
+-          "optional": true
+-        },
+-        "fork-ts-checker-webpack-plugin-v5": {
+-          "version": "npm:fork-ts-checker-webpack-plugin@5.2.1",
+-          "resolved": "https://registry.npmjs.org/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-5.2.1.tgz",
+-          "integrity": "sha512-SVi+ZAQOGbtAsUWrZvGzz38ga2YqjWvca1pXQFUArIVXqli0lLoDQ8uS0wg0kSpcwpZmaW5jVCZXQebkyUQSsw==",
+-          "dev": true,
+-          "optional": true,
+-          "requires": {
+-            "@babel/code-frame": "^7.8.3",
+-            "@types/json-schema": "^7.0.5",
+-            "chalk": "^4.1.0",
+-            "cosmiconfig": "^6.0.0",
+-            "deepmerge": "^4.2.2",
+-            "fs-extra": "^9.0.0",
+-            "memfs": "^3.1.2",
+-            "minimatch": "^3.0.4",
+-            "schema-utils": "2.7.0",
+-            "semver": "^7.3.2",
+-            "tapable": "^1.0.0"
+-          }
+-        },
+-        "has-flag": {
+-          "version": "4.0.0",
+-          "resolved": "https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz",
+-          "integrity": "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==",
+-          "dev": true,
+-          "optional": true
+-        },
+-        "lru-cache": {
+-          "version": "6.0.0",
+-          "resolved": "https://registry.npmjs.org/lru-cache/-/lru-cache-6.0.0.tgz",
+-          "integrity": "sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==",
+-          "dev": true,
+-          "optional": true,
+-          "requires": {
+-            "yallist": "^4.0.0"
+-          }
+-        },
+-        "schema-utils": {
+-          "version": "2.7.0",
+-          "resolved": "https://registry.npmjs.org/schema-utils/-/schema-utils-2.7.0.tgz",
+-          "integrity": "sha512-0ilKFI6QQF5nxDZLFn2dMjvc4hjg/Wkg7rHd3jK6/A4a1Hl9VFdQWvgB1UMGoU94pad1P/8N7fMcEnLnSiju8A==",
+-          "dev": true,
+-          "optional": true,
+-          "requires": {
+-            "@types/json-schema": "^7.0.4",
+-            "ajv": "^6.12.2",
+-            "ajv-keywords": "^3.4.1"
+-          }
+-        },
+-        "semver": {
+-          "version": "7.3.5",
+-          "resolved": "https://registry.npmjs.org/semver/-/semver-7.3.5.tgz",
+-          "integrity": "sha512-PoeGJYh8HK4BTO/a9Tf6ZG3veo/A7ZVsYrSA6J8ny9nb3B1VrpkuN+z9OE5wfE5p6H4LchYZsegiQgbJD94ZFQ==",
+-          "dev": true,
+-          "optional": true,
+-          "requires": {
+-            "lru-cache": "^6.0.0"
+-          }
+-        },
+-        "supports-color": {
+-          "version": "7.2.0",
+-          "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz",
+-          "integrity": "sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==",
+-          "dev": true,
+-          "optional": true,
+-          "requires": {
+-            "has-flag": "^4.0.0"
+-          }
+-        },
+-        "yallist": {
+-          "version": "4.0.0",
+-          "resolved": "https://registry.npmjs.org/yallist/-/yallist-4.0.0.tgz",
+-          "integrity": "sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==",
+-          "dev": true,
+-          "optional": true
+-        }
+       }
+     },
+     "@vue/cli-plugin-vuex": {
+@@ -3291,16 +3175,6 @@
+           "integrity": "sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==",
+           "dev": true
+         },
+-        "ansi-styles": {
+-          "version": "4.3.0",
+-          "resolved": "https://registry.npmjs.org/ansi-styles/-/ansi-styles-4.3.0.tgz",
+-          "integrity": "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==",
+-          "dev": true,
+-          "optional": true,
+-          "requires": {
+-            "color-convert": "^2.0.1"
+-          }
+-        },
+         "cacache": {
+           "version": "13.0.1",
+           "resolved": "https://registry.npmjs.org/cacache/-/cacache-13.0.1.tgz",
+@@ -3327,34 +3201,6 @@
+             "unique-filename": "^1.1.1"
+           }
+         },
+-        "chalk": {
+-          "version": "4.1.0",
+-          "resolved": "https://registry.npmjs.org/chalk/-/chalk-4.1.0.tgz",
+-          "integrity": "sha512-qwx12AxXe2Q5xQ43Ac//I6v5aXTipYrSESdOgzrN+9XjgEpyjpKuvSGaN4qE93f7TQTlerQQ8S+EQ0EyDoVL1A==",
+-          "dev": true,
+-          "optional": true,
+-          "requires": {
+-            "ansi-styles": "^4.1.0",
+-            "supports-color": "^7.1.0"
+-          }
+-        },
+-        "color-convert": {
+-          "version": "2.0.1",
+-          "resolved": "https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz",
+-          "integrity": "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==",
+-          "dev": true,
+-          "optional": true,
+-          "requires": {
+-            "color-name": "~1.1.4"
+-          }
+-        },
+-        "color-name": {
+-          "version": "1.1.4",
+-          "resolved": "https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz",
+-          "integrity": "sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==",
+-          "dev": true,
+-          "optional": true
+-        },
+         "fs-extra": {
+           "version": "7.0.1",
+           "resolved": "https://registry.npmjs.org/fs-extra/-/fs-extra-7.0.1.tgz",
+@@ -3366,13 +3212,6 @@
+             "universalify": "^0.1.0"
+           }
+         },
+-        "has-flag": {
+-          "version": "4.0.0",
+-          "resolved": "https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz",
+-          "integrity": "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==",
+-          "dev": true,
+-          "optional": true
+-        },
+         "jsonfile": {
+           "version": "4.0.0",
+           "resolved": "https://registry.npmjs.org/jsonfile/-/jsonfile-4.0.0.tgz",
+@@ -3382,18 +3221,6 @@
+             "graceful-fs": "^4.1.6"
+           }
+         },
+-        "loader-utils": {
+-          "version": "2.0.0",
+-          "resolved": "https://registry.npmjs.org/loader-utils/-/loader-utils-2.0.0.tgz",
+-          "integrity": "sha512-rP4F0h2RaWSvPEkD7BLDFQnvSf+nK+wr3ESUjNTyAGobqrijmW92zc+SO6d4p4B1wh7+B/Jg1mkQe5NYUEHtHQ==",
+-          "dev": true,
+-          "optional": true,
+-          "requires": {
+-            "big.js": "^5.2.2",
+-            "emojis-list": "^3.0.0",
+-            "json5": "^2.1.2"
+-          }
+-        },
+         "source-map": {
+           "version": "0.6.1",
+           "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz",
+@@ -3410,16 +3237,6 @@
+             "minipass": "^3.1.1"
+           }
+         },
+-        "supports-color": {
+-          "version": "7.2.0",
+-          "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz",
+-          "integrity": "sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==",
+-          "dev": true,
+-          "optional": true,
+-          "requires": {
+-            "has-flag": "^4.0.0"
+-          }
+-        },
+         "terser-webpack-plugin": {
+           "version": "2.3.8",
+           "resolved": "https://registry.npmjs.org/terser-webpack-plugin/-/terser-webpack-plugin-2.3.8.tgz",
+@@ -3442,18 +3259,6 @@
+           "resolved": "https://registry.npmjs.org/universalify/-/universalify-0.1.2.tgz",
+           "integrity": "sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==",
+           "dev": true
+-        },
+-        "vue-loader-v16": {
+-          "version": "npm:vue-loader@16.2.0",
+-          "resolved": "https://registry.npmjs.org/vue-loader/-/vue-loader-16.2.0.tgz",
+-          "integrity": "sha512-TitGhqSQ61RJljMmhIGvfWzJ2zk9m1Qug049Ugml6QP3t0e95o0XJjk29roNEiPKJQBEi8Ord5hFuSuELzSp8Q==",
+-          "dev": true,
+-          "optional": true,
+-          "requires": {
+-            "chalk": "^4.1.0",
+-            "hash-sum": "^2.0.0",
+-            "loader-utils": "^2.0.0"
+-          }
+         }
+       }
+     },
+@@ -4254,7 +4059,7 @@
+       "dependencies": {
+         "core-js": {
+           "version": "2.6.12",
+-          "resolved": "https://registry.npm.taobao.org/core-js/download/core-js-2.6.12.tgz?cache=0&sync_timestamp=1617182041689&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcore-js%2Fdownload%2Fcore-js-2.6.12.tgz",
++          "resolved": "https://registry.npm.taobao.org/core-js/download/core-js-2.6.12.tgz",
+           "integrity": "sha1-2TM9+nsGXjR8xWgiGdb2kIWcwuw=",
+           "dev": true
+         },
+@@ -7368,6 +7173,122 @@
+         "worker-rpc": "^0.1.0"
+       }
+     },
++    "fork-ts-checker-webpack-plugin-v5": {
++      "version": "npm:fork-ts-checker-webpack-plugin@5.2.1",
++      "resolved": "https://registry.npmjs.org/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-5.2.1.tgz",
++      "integrity": "sha512-SVi+ZAQOGbtAsUWrZvGzz38ga2YqjWvca1pXQFUArIVXqli0lLoDQ8uS0wg0kSpcwpZmaW5jVCZXQebkyUQSsw==",
++      "dev": true,
++      "optional": true,
++      "requires": {
++        "@babel/code-frame": "^7.8.3",
++        "@types/json-schema": "^7.0.5",
++        "chalk": "^4.1.0",
++        "cosmiconfig": "^6.0.0",
++        "deepmerge": "^4.2.2",
++        "fs-extra": "^9.0.0",
++        "memfs": "^3.1.2",
++        "minimatch": "^3.0.4",
++        "schema-utils": "2.7.0",
++        "semver": "^7.3.2",
++        "tapable": "^1.0.0"
++      },
++      "dependencies": {
++        "ansi-styles": {
++          "version": "4.3.0",
++          "resolved": "https://registry.npmjs.org/ansi-styles/-/ansi-styles-4.3.0.tgz",
++          "integrity": "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==",
++          "dev": true,
++          "optional": true,
++          "requires": {
++            "color-convert": "^2.0.1"
++          }
++        },
++        "chalk": {
++          "version": "4.1.0",
++          "resolved": "https://registry.npmjs.org/chalk/-/chalk-4.1.0.tgz",
++          "integrity": "sha512-qwx12AxXe2Q5xQ43Ac//I6v5aXTipYrSESdOgzrN+9XjgEpyjpKuvSGaN4qE93f7TQTlerQQ8S+EQ0EyDoVL1A==",
++          "dev": true,
++          "optional": true,
++          "requires": {
++            "ansi-styles": "^4.1.0",
++            "supports-color": "^7.1.0"
++          }
++        },
++        "color-convert": {
++          "version": "2.0.1",
++          "resolved": "https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz",
++          "integrity": "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==",
++          "dev": true,
++          "optional": true,
++          "requires": {
++            "color-name": "~1.1.4"
++          }
++        },
++        "color-name": {
++          "version": "1.1.4",
++          "resolved": "https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz",
++          "integrity": "sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==",
++          "dev": true,
++          "optional": true
++        },
++        "has-flag": {
++          "version": "4.0.0",
++          "resolved": "https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz",
++          "integrity": "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==",
++          "dev": true,
++          "optional": true
++        },
++        "lru-cache": {
++          "version": "6.0.0",
++          "resolved": "https://registry.npmjs.org/lru-cache/-/lru-cache-6.0.0.tgz",
++          "integrity": "sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==",
++          "dev": true,
++          "optional": true,
++          "requires": {
++            "yallist": "^4.0.0"
++          }
++        },
++        "schema-utils": {
++          "version": "2.7.0",
++          "resolved": "https://registry.npmjs.org/schema-utils/-/schema-utils-2.7.0.tgz",
++          "integrity": "sha512-0ilKFI6QQF5nxDZLFn2dMjvc4hjg/Wkg7rHd3jK6/A4a1Hl9VFdQWvgB1UMGoU94pad1P/8N7fMcEnLnSiju8A==",
++          "dev": true,
++          "optional": true,
++          "requires": {
++            "@types/json-schema": "^7.0.4",
++            "ajv": "^6.12.2",
++            "ajv-keywords": "^3.4.1"
++          }
++        },
++        "semver": {
++          "version": "7.3.5",
++          "resolved": "https://registry.npmjs.org/semver/-/semver-7.3.5.tgz",
++          "integrity": "sha512-PoeGJYh8HK4BTO/a9Tf6ZG3veo/A7ZVsYrSA6J8ny9nb3B1VrpkuN+z9OE5wfE5p6H4LchYZsegiQgbJD94ZFQ==",
++          "dev": true,
++          "optional": true,
++          "requires": {
++            "lru-cache": "^6.0.0"
++          }
++        },
++        "supports-color": {
++          "version": "7.2.0",
++          "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz",
++          "integrity": "sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==",
++          "dev": true,
++          "optional": true,
++          "requires": {
++            "has-flag": "^4.0.0"
++          }
++        },
++        "yallist": {
++          "version": "4.0.0",
++          "resolved": "https://registry.npmjs.org/yallist/-/yallist-4.0.0.tgz",
++          "integrity": "sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==",
++          "dev": true,
++          "optional": true
++        }
++      }
++    },
+     "form-data": {
+       "version": "2.3.3",
+       "resolved": "https://registry.npmjs.org/form-data/-/form-data-2.3.3.tgz",
+@@ -7431,9 +7352,9 @@
+       }
+     },
+     "fs-monkey": {
+-      "version": "1.0.1",
+-      "resolved": "https://registry.npmjs.org/fs-monkey/-/fs-monkey-1.0.1.tgz",
+-      "integrity": "sha512-fcSa+wyTqZa46iWweI7/ZiUfegOZl0SG8+dltIwFXo7+zYU9J9kpS3NB6pZcSlJdhvIwp81Adx2XhZorncxiaA==",
++      "version": "1.0.3",
++      "resolved": "https://registry.npmjs.org/fs-monkey/-/fs-monkey-1.0.3.tgz",
++      "integrity": "sha512-cybjIfiiE+pTWicSCLFHSrXZ6EilF30oh91FDP9S2B051prEa7QWfrVTQm10/dDpswBDXZugPa1Ogu8Yh+HV0Q==",
+       "dev": true,
+       "optional": true
+     },
+@@ -9203,13 +9124,13 @@
+       "integrity": "sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g="
+     },
+     "memfs": {
+-      "version": "3.2.0",
+-      "resolved": "https://registry.npmjs.org/memfs/-/memfs-3.2.0.tgz",
+-      "integrity": "sha512-f/xxz2TpdKv6uDn6GtHee8ivFyxwxmPuXatBb1FBwxYNuVpbM3k/Y1Z+vC0mH/dIXXrukYfe3qe5J32Dfjg93A==",
++      "version": "3.2.2",
++      "resolved": "https://registry.npmjs.org/memfs/-/memfs-3.2.2.tgz",
++      "integrity": "sha512-RE0CwmIM3CEvpcdK3rZ19BC4E6hv9kADkMN5rPduRak58cNArWLi/9jFLsa4rhsjfVxMP3v0jO7FHXq7SvFY5Q==",
+       "dev": true,
+       "optional": true,
+       "requires": {
+-        "fs-monkey": "1.0.1"
++        "fs-monkey": "1.0.3"
+       }
+     },
+     "memory-fs": {
+@@ -13325,6 +13246,87 @@
+         }
+       }
+     },
++    "vue-loader-v16": {
++      "version": "npm:vue-loader@16.2.0",
++      "resolved": "https://registry.npmjs.org/vue-loader/-/vue-loader-16.2.0.tgz",
++      "integrity": "sha512-TitGhqSQ61RJljMmhIGvfWzJ2zk9m1Qug049Ugml6QP3t0e95o0XJjk29roNEiPKJQBEi8Ord5hFuSuELzSp8Q==",
++      "dev": true,
++      "optional": true,
++      "requires": {
++        "chalk": "^4.1.0",
++        "hash-sum": "^2.0.0",
++        "loader-utils": "^2.0.0"
++      },
++      "dependencies": {
++        "ansi-styles": {
++          "version": "4.3.0",
++          "resolved": "https://registry.npmjs.org/ansi-styles/-/ansi-styles-4.3.0.tgz",
++          "integrity": "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==",
++          "dev": true,
++          "optional": true,
++          "requires": {
++            "color-convert": "^2.0.1"
++          }
++        },
++        "chalk": {
++          "version": "4.1.0",
++          "resolved": "https://registry.npmjs.org/chalk/-/chalk-4.1.0.tgz",
++          "integrity": "sha512-qwx12AxXe2Q5xQ43Ac//I6v5aXTipYrSESdOgzrN+9XjgEpyjpKuvSGaN4qE93f7TQTlerQQ8S+EQ0EyDoVL1A==",
++          "dev": true,
++          "optional": true,
++          "requires": {
++            "ansi-styles": "^4.1.0",
++            "supports-color": "^7.1.0"
++          }
++        },
++        "color-convert": {
++          "version": "2.0.1",
++          "resolved": "https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz",
++          "integrity": "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==",
++          "dev": true,
++          "optional": true,
++          "requires": {
++            "color-name": "~1.1.4"
++          }
++        },
++        "color-name": {
++          "version": "1.1.4",
++          "resolved": "https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz",
++          "integrity": "sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==",
++          "dev": true,
++          "optional": true
++        },
++        "has-flag": {
++          "version": "4.0.0",
++          "resolved": "https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz",
++          "integrity": "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==",
++          "dev": true,
++          "optional": true
++        },
++        "loader-utils": {
++          "version": "2.0.0",
++          "resolved": "https://registry.npmjs.org/loader-utils/-/loader-utils-2.0.0.tgz",
++          "integrity": "sha512-rP4F0h2RaWSvPEkD7BLDFQnvSf+nK+wr3ESUjNTyAGobqrijmW92zc+SO6d4p4B1wh7+B/Jg1mkQe5NYUEHtHQ==",
++          "dev": true,
++          "optional": true,
++          "requires": {
++            "big.js": "^5.2.2",
++            "emojis-list": "^3.0.0",
++            "json5": "^2.1.2"
++          }
++        },
++        "supports-color": {
++          "version": "7.2.0",
++          "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz",
++          "integrity": "sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==",
++          "dev": true,
++          "optional": true,
++          "requires": {
++            "has-flag": "^4.0.0"
++          }
++        }
++      }
++    },
+     "vue-loading-overlay": {
+       "version": "3.4.2",
+       "resolved": "https://registry.npmjs.org/vue-loading-overlay/-/vue-loading-overlay-3.4.2.tgz",
+@@ -14104,7 +14106,7 @@
+     },
+     "workbox-background-sync": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-background-sync/download/workbox-background-sync-4.3.1.tgz?cache=0&sync_timestamp=1615833522375&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-background-sync%2Fdownload%2Fworkbox-background-sync-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-background-sync/download/workbox-background-sync-4.3.1.tgz?cache=0&sync_timestamp=1614021427111&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-background-sync%2Fdownload%2Fworkbox-background-sync-4.3.1.tgz",
+       "integrity": "sha1-JoIbm/Funjf9HWQCie3dwIr9GVA=",
+       "dev": true,
+       "requires": {
+@@ -14113,7 +14115,7 @@
+     },
+     "workbox-broadcast-update": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-broadcast-update/download/workbox-broadcast-update-4.3.1.tgz?cache=0&sync_timestamp=1615833520432&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-broadcast-update%2Fdownload%2Fworkbox-broadcast-update-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-broadcast-update/download/workbox-broadcast-update-4.3.1.tgz?cache=0&sync_timestamp=1614021428607&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-broadcast-update%2Fdownload%2Fworkbox-broadcast-update-4.3.1.tgz",
+       "integrity": "sha1-4sAoCxSeOlBJg7dXYGrQQfMyw1s=",
+       "dev": true,
+       "requires": {
+@@ -14122,7 +14124,7 @@
+     },
+     "workbox-build": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-build/download/workbox-build-4.3.1.tgz?cache=0&sync_timestamp=1615833526480&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-build%2Fdownload%2Fworkbox-build-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-build/download/workbox-build-4.3.1.tgz",
+       "integrity": "sha1-QU9w+01t5H9lOGCLgOxSQS0jPmQ=",
+       "dev": true,
+       "requires": {
+@@ -14181,7 +14183,7 @@
+     },
+     "workbox-cacheable-response": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-cacheable-response/download/workbox-cacheable-response-4.3.1.tgz?cache=0&sync_timestamp=1615833522023&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-cacheable-response%2Fdownload%2Fworkbox-cacheable-response-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-cacheable-response/download/workbox-cacheable-response-4.3.1.tgz?cache=0&sync_timestamp=1614021426859&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-cacheable-response%2Fdownload%2Fworkbox-cacheable-response-4.3.1.tgz",
+       "integrity": "sha1-9T4HkXnAlaPxnlMTsoSXXJFCjJE=",
+       "dev": true,
+       "requires": {
+@@ -14190,13 +14192,13 @@
+     },
+     "workbox-core": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-core/download/workbox-core-4.3.1.tgz?cache=0&sync_timestamp=1615833520083&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-core%2Fdownload%2Fworkbox-core-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-core/download/workbox-core-4.3.1.tgz",
+       "integrity": "sha1-AF0sagahcUN6/WyikEpXJ+zXO+Y=",
+       "dev": true
+     },
+     "workbox-expiration": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-expiration/download/workbox-expiration-4.3.1.tgz?cache=0&sync_timestamp=1615833521598&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-expiration%2Fdownload%2Fworkbox-expiration-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-expiration/download/workbox-expiration-4.3.1.tgz?cache=0&sync_timestamp=1614021426632&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-expiration%2Fdownload%2Fworkbox-expiration-4.3.1.tgz",
+       "integrity": "sha1-15BDNWICnlaDfzQdf1U8Snjr6SE=",
+       "dev": true,
+       "requires": {
+@@ -14205,7 +14207,7 @@
+     },
+     "workbox-google-analytics": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-google-analytics/download/workbox-google-analytics-4.3.1.tgz?cache=0&sync_timestamp=1615833525657&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-google-analytics%2Fdownload%2Fworkbox-google-analytics-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-google-analytics/download/workbox-google-analytics-4.3.1.tgz?cache=0&sync_timestamp=1614021427352&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-google-analytics%2Fdownload%2Fworkbox-google-analytics-4.3.1.tgz",
+       "integrity": "sha1-ntoBg7EDiQtcJW5vTqFaHxVIUZo=",
+       "dev": true,
+       "requires": {
+@@ -14217,7 +14219,7 @@
+     },
+     "workbox-navigation-preload": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-navigation-preload/download/workbox-navigation-preload-4.3.1.tgz?cache=0&sync_timestamp=1615833524393&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-navigation-preload%2Fdownload%2Fworkbox-navigation-preload-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-navigation-preload/download/workbox-navigation-preload-4.3.1.tgz?cache=0&sync_timestamp=1614021428180&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-navigation-preload%2Fdownload%2Fworkbox-navigation-preload-4.3.1.tgz",
+       "integrity": "sha1-Kcjk21hDgDs0zZbcFV+evZr6RT0=",
+       "dev": true,
+       "requires": {
+@@ -14226,7 +14228,7 @@
+     },
+     "workbox-precaching": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-precaching/download/workbox-precaching-4.3.1.tgz?cache=0&sync_timestamp=1615833525027&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-precaching%2Fdownload%2Fworkbox-precaching-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-precaching/download/workbox-precaching-4.3.1.tgz?cache=0&sync_timestamp=1614021427567&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-precaching%2Fdownload%2Fworkbox-precaching-4.3.1.tgz",
+       "integrity": "sha1-n8Re0SLZS74fDqlYT/WUCWB3HLo=",
+       "dev": true,
+       "requires": {
+@@ -14235,7 +14237,7 @@
+     },
+     "workbox-range-requests": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-range-requests/download/workbox-range-requests-4.3.1.tgz?cache=0&sync_timestamp=1615833523812&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-range-requests%2Fdownload%2Fworkbox-range-requests-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-range-requests/download/workbox-range-requests-4.3.1.tgz?cache=0&sync_timestamp=1614021427802&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-range-requests%2Fdownload%2Fworkbox-range-requests-4.3.1.tgz",
+       "integrity": "sha1-+KRwGIkiFFy/DAmpotXjVkUkTnQ=",
+       "dev": true,
+       "requires": {
+@@ -14244,7 +14246,7 @@
+     },
+     "workbox-routing": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-routing/download/workbox-routing-4.3.1.tgz?cache=0&sync_timestamp=1615833522696&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-routing%2Fdownload%2Fworkbox-routing-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-routing/download/workbox-routing-4.3.1.tgz?cache=0&sync_timestamp=1614021428797&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-routing%2Fdownload%2Fworkbox-routing-4.3.1.tgz",
+       "integrity": "sha1-pnWEGvYj4LsMZ85O2OckrAvtDNo=",
+       "dev": true,
+       "requires": {
+@@ -14253,7 +14255,7 @@
+     },
+     "workbox-strategies": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-strategies/download/workbox-strategies-4.3.1.tgz?cache=0&sync_timestamp=1615833524103&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-strategies%2Fdownload%2Fworkbox-strategies-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-strategies/download/workbox-strategies-4.3.1.tgz?cache=0&sync_timestamp=1614021429021&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-strategies%2Fdownload%2Fworkbox-strategies-4.3.1.tgz",
+       "integrity": "sha1-0r4DxO8hTBFeGrKcnHWcn+Pp5kY=",
+       "dev": true,
+       "requires": {
+@@ -14262,7 +14264,7 @@
+     },
+     "workbox-streams": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-streams/download/workbox-streams-4.3.1.tgz?cache=0&sync_timestamp=1615833520751&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-streams%2Fdownload%2Fworkbox-streams-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-streams/download/workbox-streams-4.3.1.tgz?cache=0&sync_timestamp=1614021427990&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-streams%2Fdownload%2Fworkbox-streams-4.3.1.tgz",
+       "integrity": "sha1-C1facOmCVy3gnIdC3Qy0Cmt8LMM=",
+       "dev": true,
+       "requires": {
+@@ -14271,13 +14273,13 @@
+     },
+     "workbox-sw": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-sw/download/workbox-sw-4.3.1.tgz?cache=0&sync_timestamp=1615833519766&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-sw%2Fdownload%2Fworkbox-sw-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-sw/download/workbox-sw-4.3.1.tgz",
+       "integrity": "sha1-32njlcR5700USZNyvNhMD14kYWQ=",
+       "dev": true
+     },
+     "workbox-webpack-plugin": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-webpack-plugin/download/workbox-webpack-plugin-4.3.1.tgz?cache=0&sync_timestamp=1615833506995&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-webpack-plugin%2Fdownload%2Fworkbox-webpack-plugin-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-webpack-plugin/download/workbox-webpack-plugin-4.3.1.tgz",
+       "integrity": "sha1-R/9eocwHS2xA+1qGEIhjokEg1L0=",
+       "dev": true,
+       "requires": {
+@@ -14288,7 +14290,7 @@
+     },
+     "workbox-window": {
+       "version": "4.3.1",
+-      "resolved": "https://registry.npm.taobao.org/workbox-window/download/workbox-window-4.3.1.tgz?cache=0&sync_timestamp=1615833524691&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-window%2Fdownload%2Fworkbox-window-4.3.1.tgz",
++      "resolved": "https://registry.npm.taobao.org/workbox-window/download/workbox-window-4.3.1.tgz?cache=0&sync_timestamp=1614021428351&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fworkbox-window%2Fdownload%2Fworkbox-window-4.3.1.tgz",
+       "integrity": "sha1-7mBRvxDwavpUg8m436BTGZTt4PM=",
+       "dev": true,
+       "requires": {
+@@ -14393,9 +14395,9 @@
+       "dev": true
+     },
+     "yaml": {
+-      "version": "1.10.0",
+-      "resolved": "https://registry.npmjs.org/yaml/-/yaml-1.10.0.tgz",
+-      "integrity": "sha512-yr2icI4glYaNG+KWONODapy2/jDdMSDnrONSjblABjD9B4Z5LgiircSt8m8sRZFNi08kG9Sm0uSHtEmP3zaEGg==",
++      "version": "1.10.2",
++      "resolved": "https://registry.npmjs.org/yaml/-/yaml-1.10.2.tgz",
++      "integrity": "sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==",
+       "dev": true,
+       "optional": true
+     },
+Index: src/components/wizard/TeamWizard.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div class=\"body\">\n        <nav-bar/>\n        <div class=\"box\">\n            <span class=\"tag is-info is-pulled-left\">\n                {{ label }}\n            </span>\n            <button class=\"delete is-pulled-right\"\n                    @click=\"navigateBack\">\n            </button>\n            <div class=\"container\">\n                <label  for=\"team-name\"\n                        class=\"has-text-weight-bold\">\n                        Team name\n                </label>\n                <input  id=\"team-name\"\n                        class=\"input is-success\"\n                        type=\"text\"\n                        placeholder=\"Team name\"\n                        v-model=\"clubTeam.name\">\n                <div class=\"label\">\n                    <p v-if=\"!nameIsValid\"\n                       class=\"help is-danger has-text-weight-light\">\n                        Please enter your club name\n                    </p>\n                </div>\n                <label for=\"competition\"\n                       class=\"has-text-weight-bold\">\n                    Competition\n                </label>\n                <input id=\"competition\"\n                       class=\"input is-success\"\n                       type=\"text\"\n                       placeholder=\"Competition\"\n                       v-model=\"clubTeam.competition\">\n                <div class=\"label\">\n                    <p v-if=\"!competitionIsValid\"\n                       class=\"help is-danger has-text-weight-light\">\n                        Please enter the name of your competition\n                    </p>\n                </div>\n                <label for=\"country\"\n                       class=\"has-text-weight-bold\">\n                    Country\n                </label>\n                <input id=\"country\"\n                       class=\"input is-success\"\n                       type=\"text\"\n                       placeholder=\"Country\"\n                       v-model=\"clubTeam.country\">\n                <div class=\"label\">\n                    <p v-if=\"!countryIsValid\"\n                       class=\"help is-danger has-text-weight-light\">\n                        Please enter the country your team is in\n                    </p>\n                </div>\n                <div class=\"field is-grouped\">\n                    <Button :icon-data=\"{icon: 'far fa-save', position: 'left'}\"\n                            class-name=\"button is-centered is-primary is-outlined\"\n                            text=\"Save\"\n                            @clicked=\"submitForm(false)\"/>\n                    <Button :icon-data=\"{icon: 'fas fa-angle-double-right', position: 'left'}\"\n                            class-name=\"button is-centered is-info is-outlined\"\n                            text=\"Add players\"\n                            @clicked=\"submitForm(true)\"/>\n                </div>\n            </div>\n        </div>\n    </div>\n</template>\n\n<script lang=\"ts\">\nimport {Component, Vue} from 'vue-property-decorator';\nimport NavBar from \"@/components/navigation/NavBar.vue\";\nimport Footer from \"@/components/navigation/Footer.vue\";\nimport {namespace} from \"vuex-class\";\nimport ClubTeamBackend from \"@/backend/ClubTeamBackend\";\nconst ClubTeamModule = namespace(\"ClubTeamModule\");\nimport ClubTeamDto from \"@/data/dto/ClubTeamDto\";\nimport Button from \"@/components/common/Button.vue\";\nimport InputField from \"@/components/common/InputField.vue\";\n\n\n@Component({\n  components: {\n    NavBar,\n    Footer,\n    InputField,\n    Button\n  }\n})\nexport default class TeamWizard extends Vue {\n\n  @ClubTeamModule.State('clubTeam')\n  private storedClubTeam: ClubTeamDto | undefined;\n  private clubTeam: ClubTeamDto | undefined;\n\n  private nameIsValid: boolean = true;\n  private competitionIsValid: boolean = true;\n  private countryIsValid: boolean = true;\n  private label: string | undefined;\n\n  created() {\n    if (!this.storedClubTeam){\n      this.label = 'Create team';\n      this.clubTeam = {\n        id: undefined,\n        name: undefined,\n        competition: undefined,\n        country: undefined,\n        players: []\n      }\n    } else {\n      this.clubTeam = this.storedClubTeam;\n      this.label = 'Edit team';\n    }\n  }\n\n  private validateForm(): boolean {\n    this.nameIsValid = this.clubTeam!.name?.length !> 0;\n    this.competitionIsValid = this.clubTeam!.competition?.length !> 0;\n    this.countryIsValid = this.clubTeam!.country?.length !> 0;\n    return this.nameIsValid && this.competitionIsValid && this.countryIsValid;\n  }\n\n  submitForm(toPlayerWizard: boolean) {\n    const isValid = this.validateForm();\n    if (isValid && this.clubTeam && this.clubTeam.id) {\n      this.updateTeam(this.clubTeam, toPlayerWizard);\n    } else if (isValid && this.clubTeam && !this.clubTeam.id) {\n      this.createTeam(this.clubTeam, toPlayerWizard);\n    }\n  }\n\n  private createTeam(clubTeam: ClubTeamDto, toPlayerWizard: boolean){\n    ClubTeamBackend.createClubTeam(clubTeam)\n        .toPromise()\n        .finally(() => {\n          if (toPlayerWizard) {\n            this.$router.push('/manage-team/player');\n            this.notify();\n          } else {\n            this.navigateBack();\n            this.notify();\n          }\n        });\n  }\n\n  private updateTeam(clubTeam: ClubTeamDto, toPlayerWizard: boolean){\n    ClubTeamBackend.updateClubTeam(clubTeam)\n        .toPromise()\n        .finally(() => {\n          if (toPlayerWizard) {\n            this.$router.push('/manage-team/player');\n            this.notify();\n          } else {\n            this.navigateBack();\n            this.notify();\n          }\n        });\n  }\n\n  navigateBack() {\n    this.$router.push('/manage-team');\n  }\n\n  notify() {\n    this.$notify({\n      group: 'alert',\n      title: 'Team updated'\n    });\n  }\n\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n.box {\n  margin: 20px;\n}\n\n.container {\n  margin-top: 50px;\n}\n\n.field.is-grouped {\n  display: flex;\n  justify-content: flex-start;\n  margin-top: 40px;\n}\n\n .fa-save:before {\n   content: \"\\f0c7\";\n   margin-right: 8px;\n }\n\n .fa-angle-double-right:before {\n   content: \"\\f101\";\n   margin-left: 8px;\n }\n\n.is-success.textarea, .is-success.input {\n  border-color: #48c774;\n  margin-top: 10px;\n}\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/wizard/TeamWizard.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/wizard/TeamWizard.vue	(date 1618400012033)
+@@ -56,7 +56,7 @@
+                 </div>
+                 <div class="field is-grouped">
+                     <Button :icon-data="{icon: 'far fa-save', position: 'left'}"
+-                            class-name="button is-centered is-primary is-outlined"
++                            class-name="button is-centered is-primary is-outlined no-background"
+                             text="Save"
+                             @clicked="submitForm(false)"/>
+                     <Button :icon-data="{icon: 'fas fa-angle-double-right', position: 'left'}"
+@@ -178,6 +178,7 @@
+ 
+ .box {
+   margin: 20px;
++  background-color: #1e1e1e;
+ }
+ 
+ .container {
+@@ -203,6 +204,12 @@
+ .is-success.textarea, .is-success.input {
+   border-color: #48c774;
+   margin-top: 10px;
++  color: whitesmoke;
++  background-color: #323232;
+ }
+ 
++.has-text-weight-bold {
++  font-weight: 700 !important;
++  color: whitesmoke;
++}
+ </style>
+Index: src/components/wizard/utils/ConfirmationPage.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div>\n        <div class=\"box\">\n            <div id=\"session-details\">\n                <p> Date: {{ sessionDate }} </p>\n                <p> Name: {{ sessionName }} </p>\n                <p> Duration: {{ sessionDuration }} minutes</p>\n            </div>\n        </div>\n        <div class=\"box\">\n            <h5 class=\"title is-5\">First Team</h5>\n            <div class=\"team\">\n                <div class=\"card-content first-team-player\"\n                     v-for=\"player in firstTeam\"\n                     :key=\"player.player.id\">\n                    {{ player.player.givenName }}\n                </div>\n            </div>\n        </div>\n        <div class=\"box\">\n            <h5 class=\"title is-5\">Second Team</h5>\n            <div class=\"team\">\n                <div class=\"card-content second-team-player\"\n                     v-for=\"player in secondTeam\"\n                     :key=\"player.player.id\">\n                    {{ player.player.givenName }}\n                </div>\n            </div>\n        </div>\n    </div>\n</template>\n\n<script lang=\"ts\">\nimport {Component, Vue} from 'vue-property-decorator';\nimport {namespace} from 'vuex-class';\nimport {SessionTeam} from '@/data/enum/SessionTeam';\nimport {SessionWizardPlayer} from '@/data/interface/SessionWizardPlayer';\n\nconst SessionWizardModuleInstance = namespace('SessionWizardModule')\n\n@Component\nexport default class ConfirmationPage extends Vue {\n\n    @SessionWizardModuleInstance.Getter('sessionName')\n    getSessionName: string | undefined;\n\n    @SessionWizardModuleInstance.Getter('sessionDuration')\n    getSessionDuration: number | undefined;\n\n    @SessionWizardModuleInstance.Getter('sessionDate')\n    getSessionDate: Date | undefined;\n\n    @SessionWizardModuleInstance.Getter('playersOfTeam')\n    getPlayersOfTeam!: (team: SessionTeam) => SessionWizardPlayer[];\n\n    get sessionName(): string {\n        return this.getSessionName ? this.getSessionName : '';\n    }\n\n    get sessionDuration(): number | string {\n        return this.getSessionDuration ? this.getSessionDuration : '';\n    }\n\n    get sessionDate(): Date | string {\n        if (!this.getSessionDate) {\n            return '';\n        }\n        return this.getSessionDate ? this.getSessionDate.toLocaleDateString('nl') : '';\n    }\n\n    get firstTeam() {\n        return this.getPlayersOfTeam(SessionTeam.FIRST);\n    }\n\n    get secondTeam() {\n        return this.getPlayersOfTeam(SessionTeam.SECOND);\n    }\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n#session-details {\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n}\n\n.team {\n    display: flex;\n    flex-wrap: wrap;\n}\n\n.card-content {\n    margin: 5px;\n    padding: 10px;\n    border-radius: 5px;\n}\n\n.first-team-player {\n    background: turquoise;\n}\n\n.second-team-player {\n    background: lightcoral;\n}\n\n\n</style>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/wizard/utils/ConfirmationPage.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/wizard/utils/ConfirmationPage.vue	(date 1618400752902)
+@@ -91,10 +91,15 @@
+     flex-wrap: wrap;
+ }
+ 
++.title.is-5, #session-details {
++  color:  whitesmoke;
++}
++
+ .card-content {
+     margin: 5px;
+     padding: 10px;
+     border-radius: 5px;
++
+ }
+ 
+ .first-team-player {
+@@ -105,5 +110,9 @@
+     background: lightcoral;
+ }
+ 
++.box {
++  background-color: #363636;
++}
+ 
+-</style>
+\ No newline at end of file
++
++</style>
+Index: src/components/dashboard/main/components/LineChartPanel.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n  <div class=\"column\">\n    <div class=\"box\">\n      <line-chart class=\"line-chart\" v-if=\"this.chartData\" :options=\"options\" :data=\"chartDataObject\" />\n    </div>\n  </div>\n</template>\n\n<script lang=\"ts\">\nimport Component from \"vue-class-component\";\nimport {Prop, Vue} from \"vue-property-decorator\";\nimport LineChart from \"@/components/dashboard/main/components/LineChart.vue\";\nimport DashboardBackend from \"@/backend/DashboardBackend\";\nimport {namespace} from \"vuex-class\";\nimport TeamSummaryDataDto from \"@/data/dto/TeamSummaryDataDto\";\n\n@Component({\n  components: {\n    LineChart\n  }\n})\nexport default class LineChartPanel extends Vue {\n\n  @Prop()\n  chartData!: any;\n  options = {\n    responsive: true,\n    maintainAspectRatio: false,\n    scales: {\n      yAxes: [{\n        ticks: {\n          stepSize: 1\n        }\n      }]\n    }\n  }\n\n  get chartDataObject() {\n    return this.chartData;\n  }\n\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n.box {\n  margin-top: 20px;\n  margin-right: 20px;\n  margin-left: 20px;\n  max-width: 1200px;\n  max-height: 500px;\n}\n.chartjs-render-monitor {\n  animation: chartjs-render-animation 0.05s;\n  display: inline-block;\n}\n\n\n@media (max-width: 500px) {\n  .box {\n    margin-right: 0px;\n    margin-left: 0px;\n  }\n\n  .line-chart {\n    width: 310px;\n  }\n}\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/dashboard/main/components/LineChartPanel.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/dashboard/main/components/LineChartPanel.vue	(date 1618394318592)
+@@ -67,4 +67,8 @@
+     width: 310px;
+   }
+ }
++
++.box {
++  background-color: #1e1e1e;
++}
+ </style>
+Index: src/components/sessions/game/SessionGameConsole.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div class=\"box\">\n        <div class=\"columns is-multiline is-mobile\"\n             id=\"content\">\n            <div class=\"column is-one-quarter is-size-5 has-text-centered\">\n                <p class=\"team-name\"> {{ this.FIRST_TEAM }} </p>\n            </div>\n            <div class=\"column is-half\" id=\"time\">\n                <span> {{ this.showMinutes }} : </span>\n                <span> {{ this.showSeconds }} : </span>\n                <span> {{ this.showMilliSeconds }}</span>\n            </div>\n            <div class=\"column is-one-quarter is-size-5 has-text-centered\">\n                <p class=\"team-name\"> {{ this.SECOND_TEAM }} </p>\n            </div>\n            <div class=\"column is-one-quarter is-size-3\" id=\"score-1\">\n                <p> {{ this.firstTeamScore }}</p>\n            </div>\n            <div\n                class=\"column is-half\"\n                id=\"wrapper-start-button\">\n                <button\n                    class=\"button\"\n                    :class=\"{\n                        'is-danger is-outlined': !timerIsActive,\n                        'is-danger': timerIsActive && !gameIsFinished,\n                        'is-primary': gameIsFinished }\"\n                    id=\"start-button\"\n                    @click=\"this.handleTimer\">\n                    <span> {{ this.buttonMessage }} </span>\n                </button>\n            </div>\n            <div\n                class=\"column is-one-quarter is-size-3\" id=\"score-2\">\n                <p> {{ this.secondTeamScore }} </p>\n            </div>\n        </div>\n    </div>\n</template>\n\n<script lang=\"ts\">\nimport {Component, Vue, Prop, Emit} from 'vue-property-decorator';\nimport NoSleep from 'nosleep.js';\n\n@Component\nexport default class SessionGameConsole extends Vue {\n    @Prop() private timeInMinutes!: number;\n    @Prop() private firstTeamScore!: number;\n    @Prop() private secondTeamScore!: number;\n\n    private readonly FIRST_TEAM = 'Team One';\n    private readonly SECOND_TEAM = 'Team Two';\n\n    seconds: number = 0;\n    minutes: number = this.timeInMinutes;\n    milliSeconds: number = 0;\n    timerIsActive: boolean = false;\n    timer: number | undefined = undefined;\n    buttonMessage: string = SessionGameConsole.START_MESSAGE;\n    noSleep = new NoSleep();\n\n    static START_MESSAGE = 'Start';\n    static PAUSE_MESSAGE = 'Pause';\n    static FINISH_SESSION_MESSAGE = 'Finish';\n\n    @Emit('show-finish-game-pop-up')\n    showFinishGamePopUp() {\n        return true;\n    }\n\n    get gameIsFinished() {\n        return this.minutes === 0 && this.seconds === 0 && this.milliSeconds === 0;\n    }\n\n    get showMinutes(): number {\n        return this.minutes;\n    }\n\n    get showSeconds(): number | string {\n        return this.seconds >= 10 ? this.seconds : String(this.seconds).padStart(2, '0');\n    }\n\n    get showMilliSeconds(): string {\n        return this.milliSeconds === 1000 ?\n                    String(this.milliSeconds).slice(0, -2) :\n                    this.milliSeconds >= 10 ?\n                        String(this.milliSeconds / 10).padStart(2, '0') :\n                        String(this.milliSeconds).padStart(2, '0');\n    }\n\n    private handleTimer() {\n        if (this.gameIsFinished) {\n            this.showFinishGamePopUp();\n            return;\n        }\n\n        if (this.timerIsActive) {\n            this.stopTimer();\n            this.timerIsActive = false;\n            this.buttonMessage = SessionGameConsole.START_MESSAGE;\n        } else {\n            this.startTimer();\n            this.timerIsActive = true;\n            this.buttonMessage = SessionGameConsole.PAUSE_MESSAGE;\n        }\n    }\n\n    private startTimer() {\n        this.timer = setInterval(() => {\n            if (this.minutes === 0 && this.seconds === 0 && this.milliSeconds === 0) {\n                this.stopTimer();\n                this.buttonMessage = SessionGameConsole.FINISH_SESSION_MESSAGE;\n            } else if (this.seconds === 0 && this.milliSeconds === 0) {\n                this.minutes--;\n                this.seconds = 59;\n                this.milliSeconds = 1000;\n            } else if (this.milliSeconds === 0) {\n                this.seconds--;\n                this.milliSeconds = 1000;\n            } else {\n                this.milliSeconds -= 10;\n            }\n        }, 10);\n        this.noSleep!.enable();\n    }\n\n    private stopTimer() {\n        clearInterval(this.timer);\n        this.noSleep.disable();\n    }\n\n    beforeDestroy() {\n        if (this.timer) {\n            this.timer = undefined;\n        }\n        this.noSleep.disable();\n    }\n\n}\n</script>\n\n<style scoped lang=\"scss\">\n\n#content > div {\n    display: flex;\n    justify-content: center;\n    align-self: center;\n\n}\n\n#content > div > span {\n    margin-left: 5px;\n}\n\n#wrapper-start-button #start-button {\n    width: 100%;\n}\n\n.team-name {\n  font-size: 1rem;\n}\n\n.p {\n}\n\n.box {\n  background-color: #041501;;\n  border-radius: 6px;\n  box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0 0 1px rgb(10 10 10 / 2%);\n  color: #4a4a4a;\n  display: block;\n  padding: 1.25rem;\n}\n\n.is-size-3 {\n  font-size: 2.6rem !important;\n  color: #d43d3d;\n}\n\n.team-name {\n  font-size: 1rem;\n  color: whitesmoke;\n}\n\n#time {\n  color: yellow;\n  border: 1px solid #777777;\n}\n\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/sessions/game/SessionGameConsole.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/sessions/game/SessionGameConsole.vue	(date 1618402829379)
+@@ -164,7 +164,7 @@
+ }
+ 
+ .box {
+-  background-color: #041501;;
++  background-color: #212121;
+   border-radius: 6px;
+   box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0 0 1px rgb(10 10 10 / 2%);
+   color: #4a4a4a;
+Index: src/components/sessions/game/SessionGamePlayer.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div class=\"card is-shadowless\"\n        :id=\"playerId\"\n        :session-game-team=\"sessionGameTeam\">\n        <div class=\"card-content\">\n            <div class=\"media\">\n                <div class=\"media-left\"\n                     :class=\"[playerGoals > 0 ? 'enabled' : '']\"\n                     @click=\"unregisterGoal\">\n                    <i :class=\"[playerGoals > 0 ? 'fas fa-minus has-text-danger' : 'fas fa-minus fa-disabled has-text-danger']\"></i>\n                </div>\n                <session-game-player-details\n                    :player-name=\"playerName\"\n                    :player-goals=\"playerGoals\">\n                </session-game-player-details>\n                <div class=\"media-right\"\n                     @click=\"registerGoal\"\n                     :class=\"[sessionGameTeam === TEAM_ONE ? 'first-team-icon-background' : 'second-team-icon-background']\">\n                    <i class=\"fas fa-plus\" :class=\"[sessionGameTeam === TEAM_ONE ? 'first-team-icon-color' : 'second-team-icon-color']\"></i>\n                </div>\n            </div>\n        </div>\n    </div>\n</template>\n\n<script lang=\"ts\">\nimport { Component, Vue, Prop, Emit } from 'vue-property-decorator';\nimport type { GamePlayer } from '@/data/interface/GamePlayer';\nimport SessionGamePlayerDetails from '@/components/sessions/game/SessionGamePlayerDetails.vue';\nimport {SessionGameTeam} from '@/data/enum/SessionGameTeam';\n\n@Component({\n    components: { SessionGamePlayerDetails }\n})\nexport default class SessionGamePlayer extends Vue {\n    @Prop() player!: GamePlayer;\n    @Prop() sessionGameTeam!: string;\n\n    private readonly TEAM_ONE = SessionGameTeam.ONE;\n\n    @Emit('player-scored')\n    addTeamGoal(playerId: string) {\n        return playerId;\n    }\n\n    @Emit('undo-player-scored')\n    undoTeamGoal(playerId: string) {\n        return playerId;\n    }\n\n    get playerId() {\n        return this.player.details.id;\n    }\n\n    get playerName() {\n        return this.player.details.givenName + ' ' + this.player.details.surname;\n    }\n\n    get playerGoals() {\n        return this.player.goals;\n    }\n\n    unregisterGoal() {\n        if (this.playerGoals === 0) {\n            return console.error('it is not possible to get a negative goal count');\n        }\n        this.undoTeamGoal(this.playerId!);\n    }\n\n    registerGoal() {\n        this.addTeamGoal(this.playerId!);\n    }\n\n}\n</script>\n\n\n<style scoped lang=\"scss\">\n\n\n.card {\n    margin-bottom: 10px;\n    width: 100%;\n    border-radius: 26px;\n    background-image: linear-gradient(white, #f9f9f9);\n\n    &:first-child {\n        margin-top: 5px;\n    }\n}\n\n.card-content {\n    padding: 0.5rem;\n    font-size: 0.9em;\n\n    .media {\n        display: flex;\n        align-items: center;\n\n        .media-left {\n            display: flex;\n            width: 35px;\n            height: 35px;\n            justify-content: center;\n            align-items: center;\n            border-radius: 20px;\n            margin-right: 0;\n\n            &.enabled {\n                border: thin solid rgb(250, 128, 114, 3);\n            }\n\n            &.enabled:active {\n                background: rgb(250, 128, 114, 3);\n            }\n        }\n\n        .media-right {\n            display: flex;\n            width: 35px;\n            height: 35px;\n            justify-content: center;\n            align-items: center;\n            border-radius: 20px;\n            margin-left: 0;\n\n            &.first-team-icon-background {\n                border: thin solid rgb(64, 224, 208, 3);\n            }\n\n            &.first-team-icon-background:active {\n                background: rgb(64, 224, 208, 3);\n            }\n\n            &.second-team-icon-background {\n                border: thin solid rgb(64, 224, 208, 3);\n            }\n\n            &.second-team-icon-background:active {\n                background: rgb(64, 224, 208, 3);\n            }\n\n            .first-team-icon-color {\n                color: rgb(64, 224, 208);\n            }\n\n            .second-team-icon-color {\n                color: rgb(64, 224, 208);\n            }\n        }\n    }\n}\n\n.fa-disabled {\n    opacity: 0.1;\n    cursor: not-allowed;\n}\n\n\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/sessions/game/SessionGamePlayer.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/sessions/game/SessionGamePlayer.vue	(date 1618402982827)
+@@ -82,7 +82,7 @@
+     margin-bottom: 10px;
+     width: 100%;
+     border-radius: 26px;
+-    background-image: linear-gradient(white, #f9f9f9);
++    background-color: #2e2e2e;
+ 
+     &:first-child {
+         margin-top: 5px;
+Index: src/components/sessions/game/SessionGame.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\n    <div class=\"body\">\n        <nav-bar />\n        <div id=\"content\" v-if=\"isSessionAvailable\">\n            <SessionGameConsole id=\"game-console\"\n                :timeInMinutes=\"minutes\"\n                :first-team-score=\"firstTeamGoals\"\n                :second-team-score=\"secondTeamGoals\"\n                @show-finish-game-pop-up=\"changeShowFinishGamePopUp\">\n            </SessionGameConsole>\n            <div id=\"team-tabs\"\n                class=\"tabs is-fullwidth\">\n                <ul id=\"tabs\">\n                    <li :class=\"[currentTeam === FIRST_TEAM ? 'is-active highlight-team-one' : 'unhighlight-team-one']\">\n                        <a @click=\"currentTeam = FIRST_TEAM\"> {{ this.FIRST_TEAM }} </a>\n                    </li>\n                    <li :class=\"[currentTeam === SECOND_TEAM ? 'is-active highlight-team-one' : 'unhighlight-team-one']\">\n                        <a @click=\"currentTeam = SECOND_TEAM\"> {{ this.SECOND_TEAM }} </a>\n                    </li>\n                </ul>\n            </div>\n            <agile :dots=\"false\"\n                   :nav-buttons=\"false\"\n                   :speed=\"500\"\n                    @before-change=\"handleChangeOfTeam\">\n                <div id=\"team-first\" v-if=\"this.currentTeam === this.FIRST_TEAM\">\n                    <SessionGamePlayer\n                        v-for=\"(player, index) in firstTeamPlayers\"\n                        :key=\"index\"\n                        :player=\"player\"\n                        :session-game-team=\"FIRST_TEAM\"\n                        @player-scored=\"registerTeamGoal\"\n                        @undo-player-scored=\"unregisterTeamGoal\">\n                    </SessionGamePlayer>\n                </div>\n                <div id=\"team-second\" v-if=\"this.currentTeam === this.SECOND_TEAM\">\n                    <SessionGamePlayer\n                        v-for=\"(player, index) in secondTeamPlayers\"\n                        :key=\"index\"\n                        :player=\"player\"\n                        :session-game-team=\"SECOND_TEAM\"\n                        @player-scored=\"registerTeamGoal\"\n                        @undo-player-scored=\"unregisterTeamGoal\">\n                    </SessionGamePlayer>\n                </div>\n            </agile>\n            <PopUp\n                v-if=\"showGoBackPopUp\"\n                :pop-up-text=\"textPopUp\"\n                @decline=\"changeShowGoBackPopUp\"\n                @confirm=\"backToSessionOverview\">\n            </PopUp>\n            <PopUp\n                v-if=\"showFinishGamePopUp\"\n                :pop-up-text=\"textPopUp\"\n                @decline=\"changeShowFinishGamePopUp\"\n                @confirm=\"finishSessionGame\">\n            </PopUp>\n        </div>\n        <footer class=\"footer-details\">\n            <Button\n                :icon-data=\"{ icon: 'fas fa-angle-double-left', position: 'left' }\"\n                class-name=\"button is-centered is-danger is-outlined\"\n                text=\"Go Back\"\n                @clicked=\"changeShowGoBackPopUp\">\n            </Button>\n            <Button\n                :icon-data=\"{ icon: 'fas fa-angle-double-right', position: 'right' }\"\n                class-name=\"button is-centered is-primary is-outlined no-background\"\n                text=\"Finish\"\n                @clicked=\"changeShowFinishGamePopUp\">\n            </Button>\n        </footer>\n    </div>\n</template>\n\n<script lang=\"ts\">\nimport {Component, Vue} from 'vue-property-decorator';\nimport NavBar from '@/components/navigation/NavBar.vue';\nimport SessionDto from '@/data/dto/SessionDto';\nimport SessionModule from '@/store/modules/SessionModule';\nimport SessionGamePlayer from '@/components/sessions/game/SessionGamePlayer.vue';\nimport SessionGameConsole from '@/components/sessions/game/SessionGameConsole.vue';\nimport {GamePlayer} from '@/data/interface/GamePlayer';\nimport SessionBackend from '@/backend/SessionBackend';\nimport { findPlayerByIdAndTeam,\n    mapPlayersToGamePlayers,\n    mapGoalsToPlayersScoredList } from './SessionGameUtils';\nimport {SessionResult} from '@/data/enum/SessionResult';\nimport PopUp from '@/components/common/PopUp.vue';\nimport {namespace} from 'vuex-class';\nimport Button from '@/components/common/Button.vue';\nimport { VueAgile } from 'vue-agile';\n\nimport Routes from '@/router/Routes';\nimport {SessionGameTeam} from '@/data/enum/SessionGameTeam';\nconst SessionModuleStore = namespace('SessionModule');\n\n@Component({\n    components: {\n        Button,\n        NavBar,\n        SessionGameConsole,\n        SessionGamePlayer,\n        PopUp,\n        agile: VueAgile\n    }\n})\nexport default class SessionGame extends Vue {\n\n    @SessionModuleStore.Getter('sessionById')\n    getSessionById!: (id: string) => SessionDto;\n\n    @SessionModuleStore.Getter('currentGameSession')\n    getCurrentGameSession!: () => SessionDto;\n\n    private readonly FIRST_TEAM = SessionGameTeam.ONE;\n    private readonly SECOND_TEAM = SessionGameTeam.TWO;\n\n    textPopUp = '';\n    session: SessionDto | undefined;\n    currentTeam = this.FIRST_TEAM;\n    firstTeam: GamePlayer[] = [];\n    secondTeam: GamePlayer[] = [];\n    isSessionAvailable = true;\n    showFinishGamePopUp = false;\n    showGoBackPopUp = false;\n\n    async beforeMount() {\n        this.session = this.getCurrentGameSession();\n        if (this.session) {\n            this.firstTeam = mapPlayersToGamePlayers(this.session!.first!.players!);\n            this.secondTeam = mapPlayersToGamePlayers(this.session!.second!.players!);\n            return;\n        }\n        this.isSessionAvailable = false;\n        const sessionId = this.getSessionIdFromUrl();\n        await this.retrieveSessionFromBackend(sessionId);\n    }\n\n    get firstTeamPlayers() {\n        return this.firstTeam.sort((first: GamePlayer, second: GamePlayer) => first.details.givenName!.localeCompare(second.details.givenName!));\n    }\n\n    get secondTeamPlayers() {\n        return this.secondTeam.sort((first: GamePlayer, second: GamePlayer) => first.details.givenName!.localeCompare(second.details.givenName!));\n    }\n\n    get firstTeamGoals() {\n        let goals: number = 0;\n        this.firstTeam.forEach(player => goals += player.goals);\n        return goals;\n    }\n\n    get secondTeamGoals() {\n        let goals: number = 0;\n        this.secondTeam.forEach(player => goals += player.goals);\n        return goals;\n    }\n\n    get minutes () {\n        return this.session!.minutes;\n    }\n\n    changeShowFinishGamePopUp() {\n        this.textPopUp = 'Finish Game?';\n        this.showFinishGamePopUp = !this.showFinishGamePopUp;\n    }\n\n    changeShowGoBackPopUp() {\n        this.textPopUp = 'Quit Game?';\n        this.showGoBackPopUp = !this.showGoBackPopUp;\n    }\n\n    getSessionIdFromUrl(): string {\n        const path = this.$route.path;\n        const sessionId = path.split('/').pop();\n        if (!sessionId) {\n            throw Error('The session does not have a valid id');\n        }\n        return sessionId;\n    }\n\n    async retrieveSessionFromBackend(sessionId: string) {\n        try {\n            await SessionBackend.retrieveSession(sessionId).subscribe(\n                (session: SessionDto) => {\n                    this.$store.commit('SessionModule/setCurrentSession', session);\n                }, (error: any) => {\n                    console.error(error);\n                    return;\n                }, () => {\n                    this.session = this.getCurrentGameSession();\n                    this.firstTeam = mapPlayersToGamePlayers(this.session!.first!.players!);\n                    this.secondTeam = mapPlayersToGamePlayers(this.session!.second!.players!);\n                    this.isSessionAvailable = true;\n                });\n        } catch (error) {\n            throw (error);\n        }\n    }\n\n    registerTeamGoal(playerId: string): void {\n        const playerFirstTeam = findPlayerByIdAndTeam(playerId, this.firstTeam);\n        if (!playerFirstTeam) {\n            const playerSecondTeam = findPlayerByIdAndTeam(playerId, this.secondTeam);\n            playerSecondTeam!.goals++;\n        } else {\n            playerFirstTeam.goals++;\n        }\n    }\n\n    unregisterTeamGoal(playerId: string) {\n        const playerFirstTeam = findPlayerByIdAndTeam(playerId, this.firstTeam);\n        if (!playerFirstTeam) {\n            const playerSecondTeam = findPlayerByIdAndTeam(playerId, this.secondTeam);\n            playerSecondTeam!.goals--;\n        } else {\n            playerFirstTeam.goals--;\n        }\n    }\n\n    determineResultOfSessionGame() {\n        if (this.firstTeamGoals === this.secondTeamGoals) {\n            this.session!.first!.result!.result = SessionResult.TIE;\n            this.session!.second!.result!.result = SessionResult.TIE;\n        } else if (this.firstTeamGoals > this.secondTeamGoals) {\n            this.session!.first!.result!.result = SessionResult.WON;\n            this.session!.second!.result!.result = SessionResult.LOST;\n        } else {\n            this.session!.first!.result!.result = SessionResult.LOST;\n            this.session!.second!.result!.result = SessionResult.WON;\n        }\n    }\n\n    finishSessionGame() {\n        this.changeShowFinishGamePopUp();\n        this.determineResultOfSessionGame();\n        mapGoalsToPlayersScoredList(this.firstTeam, this.session!.first!);\n        mapGoalsToPlayersScoredList(this.secondTeam, this.session!.second!);\n        SessionBackend.updateSession(this.session!).subscribe(() => this.backToSessionOverview());\n    }\n\n    backToSessionOverview() {\n        this.$router.push({\n            name: Routes.Main\n        });\n    }\n\n    handleChangeOfTeam() {\n        return this.currentTeam === this.FIRST_TEAM\n            ? this.currentTeam = this.SECOND_TEAM\n            : this.currentTeam = this.FIRST_TEAM;\n    }\n\n}\n</script>\n\n<style scoped lang=\"scss\">\n$team-one-selected: rgb(88, 196, 62);\n$team-one-unselected: rgba(206, 207, 207, 0.2);\n$team-two-selected: rgb(255, 165, 0);\n$team-two-unselected: rgb(255, 165, 0, 0.2);\n\n.body {\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n    //background: rgb(245, 245, 245);\n    background-image: url(\"http://www.pptback.com/uploads/football-soccer-field-backgrounds-powerpoint.jpg\");\n\n\n}\n\n.body #content {\n    display: flex;\n    flex-basis: 100%;\n    flex-direction: column;\n    align-content: center;\n    margin: 20px;\n\n    .agile {\n        -ms-touch-action: pan-y;\n        touch-action: pan-y;\n\n        [id^=team] {\n            display: flex;\n            flex-wrap: wrap;\n            justify-content: center;\n        }\n    }\n\n    #team-tabs #tabs {\n        border-color: transparent;\n\n        .highlight-team-one {\n            background: $team-one-selected;\n            border-radius: 10px;\n            margin-right: 10px;\n\n            a {\n                color: white;\n                border-color: transparent;\n            }\n        }\n\n        .unhighlight-team-one {\n            background: $team-one-unselected;\n            border-radius: 10px;\n            margin-right: 10px;\n\n            a {\n                color: white;\n                border-color: transparent;\n            }\n        }\n\n        .highlight-team-two {\n            background: $team-two-selected;\n            border-radius: 10px;\n            margin-left: 10px;\n\n            a {\n                color: white;\n                border-color: transparent;\n            }\n        }\n\n        .unhighlight-team-two {\n            background: $team-two-unselected;\n            border-radius: 10px;\n            margin-left: 10px;\n\n            a {\n                color: white;\n                border-color: transparent;\n            }\n        }\n    }\n\n}\n\n.body #content #game-console {\n    display: flex;\n    flex-basis: 30%;\n}\n\n.body .footer-details {\n    display: flex;\n    justify-content: space-between;\n    padding: 4vw;\n    width: 100vw;\n}\n\n\n\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/sessions/game/SessionGame.vue	(revision aaf0507f9eadec672f23922fa7daf49ec860995d)
++++ src/components/sessions/game/SessionGame.vue	(date 1618403105364)
+@@ -257,7 +257,7 @@
+ </script>
+ 
+ <style scoped lang="scss">
+-$team-one-selected: rgb(88, 196, 62);
++$team-one-selected: #40e0d0;
+ $team-one-unselected: rgba(206, 207, 207, 0.2);
+ $team-two-selected: rgb(255, 165, 0);
+ $team-two-unselected: rgb(255, 165, 0, 0.2);
+@@ -266,10 +266,7 @@
+     display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+-    //background: rgb(245, 245, 245);
+-    background-image: url("http://www.pptback.com/uploads/football-soccer-field-backgrounds-powerpoint.jpg");
+-
+-
++    background-image: url("../../../assets/images/background.png");
+ }
+ 
+ .body #content {
+@@ -350,6 +347,7 @@
+     justify-content: space-between;
+     padding: 4vw;
+     width: 100vw;
++    bottom: -66px;
+ }
+ 
+ 

@@ -1,0 +1,42 @@
+$primary: turquoise;
+$primary-blurred: rgb(64, 224, 208, 0.05);
+@import '~bulma';
+
+$steps-active-color: $primary;
+$steps-completed-color: $primary;
+@import '~bulma-o-steps';
+@import '~bulma-calendar';
+
+@import '~nprogress/nprogress.css';
+
+.vue-notification-session-wizard {
+  border: 1px solid $primary;
+  color: black !important;
+  padding: 5px;
+  background-color: #171717;
+  margin-top:2vh;
+  margin-bottom: 5vh;
+  border-radius: 10px;
+  font-size: 12px;
+  font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+  "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+
+  .notification-title {
+    text-align: center;
+  }
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #1f1f1f;
+  overflow-x: hidden !important;
+}
+
+
+
+
+

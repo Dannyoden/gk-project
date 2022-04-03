@@ -1,0 +1,14 @@
+<changelist name="back_to_root" date="1618405029271" recycled="false">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/back_to_root/shelved.patch" />
+  <option name="DESCRIPTION" value="back to root" />
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="src/assets/images/background.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/back_to_root/background.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="src/assets/images/logo_goalkeeper_white.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/back_to_root/logo_goalkeeper_white.png" />
+  </binary>
+</changelist>
